@@ -78,88 +78,86 @@ const Card = ({
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[110vh] flex flex-col items-center justify-center pt-32 pb-40 px-4 overflow-hidden text-center">
+    <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-32 px-4 overflow-hidden text-center">
       {/* Background Decorative Elements (Floating Cards) */}
       <motion.div
-        className="absolute top-16 left-[5%] md:left-[12%] z-0"
-        initial={{ y: 20, rotate: -15 }}
-        animate={{ y: [0, -15, 0], rotate: [-10, -8, -10] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[8%] left-[2%] md:left-[10%] z-0"
+        animate={{ y: [0, -20, 0], rotate: [-15, -10, -15] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
         <Card
           value="A"
           suit="♦"
           color="red"
-          className="scale-75 md:scale-100"
+          className="scale-[0.6] md:scale-90"
         />
       </motion.div>
 
       <motion.div
-        className="absolute top-16 right-[5%] md:right-[12%] z-0"
-        initial={{ y: -20, rotate: 15 }}
-        animate={{ y: [0, 15, 0], rotate: [10, 14, 10] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[5%] right-[2%] md:right-[10%] z-0"
+        animate={{ y: [0, 20, 0], rotate: [15, 20, 15] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
         <Card
           value="J"
           suit="♠"
           color="black"
-          className="scale-75 md:scale-100"
+          className="scale-[0.55] md:scale-75"
         />
       </motion.div>
 
       <motion.div
-        className="absolute top-[55%] left-0 md:left-[8%] z-0"
-        animate={{ x: [0, 10, 0], y: [0, -10, 0], rotate: [-12, -15, -12] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[35%] left-[-5%] md:left-[5%] z-0"
+        animate={{ x: [0, 10, 0], y: [0, -10, 0], rotate: [-10, -15, -10] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       >
         <Card
           value="Q"
           suit="♥"
           color="red"
           character
-          className="scale-75 md:scale-110"
+          className="scale-[0.7] md:scale-110"
         >
-          <div className="w-20 h-20 md:w-28 md:h-28 bg-[#C1262B] rounded-full border-4 border-red-900 relative overflow-hidden flex flex-col items-center pt-4">
-            <div className="absolute top-0 left-0 right-0 h-10 bg-yellow-400 border-b-2 border-red-900"></div>
-            <div className="w-14 h-14 md:w-18 md:h-18 bg-[#FFD7BA] rounded-full border-2 border-red-900 mt-2 z-10 flex flex-col items-center pt-3">
-              <div className="flex gap-4 mb-2">
-                <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-                <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+          <div className="w-16 h-16 md:w-28 md:h-28 bg-[#C1262B] rounded-full border-4 border-red-900 relative flex flex-col items-center pt-2 md:pt-4">
+            <div className="absolute top-0 left-0 right-0 h-6 md:h-10 bg-yellow-400 border-b-2 border-red-900"></div>
+            <div className="w-12 h-12 md:w-18 md:h-18 bg-[#FFD7BA] rounded-full border-2 border-red-900 mt-1 md:mt-2 z-10 flex flex-col items-center pt-2 md:pt-3">
+              <div className="flex gap-2 md:gap-4 mb-1 md:mb-2">
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
               </div>
-              <div className="w-6 h-2 border-b-2 border-red-500 rounded-full"></div>
+              <div className="w-4 h-1.5 md:w-6 md:h-2 border-b-2 border-red-500 rounded-full"></div>
             </div>
           </div>
-          <div className="text-red-500 text-3xl font-black mt-2 select-none">
+          <div className="text-red-500 text-2xl md:text-3xl font-black mt-1 md:mt-2">
             ♥
           </div>
         </Card>
       </motion.div>
 
       <motion.div
-        className="absolute top-[55%] right-0 md:right-[8%] z-0"
-        animate={{ scale: [1, 1.05, 1], rotate: [12, 15, 12] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[40%] right-[-5%] md:right-[5%] z-0"
+        animate={{ scale: [1, 1.05, 1], rotate: [10, 15, 10] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       >
         <Card
           value="K"
           suit="♥"
           color="red"
           character
-          className="scale-75 md:scale-110"
+          className="scale-[0.7] md:scale-110"
         >
-          <div className="w-20 h-20 md:w-28 md:h-28 bg-[#1E6B2D] rounded-full border-4 border-green-900 relative overflow-hidden flex flex-col items-center pt-4">
-            <div className="absolute top-0 left-0 right-0 h-10 bg-yellow-400 border-b-2 border-green-900"></div>
-            <div className="w-14 h-14 md:w-18 md:h-18 bg-[#FFD7BA] rounded-full border-2 border-green-900 mt-2 z-10 flex flex-col items-center pt-3">
-              <div className="flex gap-4 mb-2">
-                <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
-                <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
+          <div className="w-16 h-16 md:w-28 md:h-28 bg-[#1E6B2D] rounded-full border-4 border-green-900 relative flex flex-col items-center pt-2 md:pt-4">
+            <div className="absolute top-0 left-0 right-0 h-6 md:h-10 bg-yellow-400 border-b-2 border-green-900"></div>
+            <div className="w-12 h-12 md:w-18 md:h-18 bg-[#FFD7BA] rounded-full border-2 border-green-900 mt-1 md:mt-2 z-10 flex flex-col items-center pt-2 md:pt-3">
+              <div className="flex gap-2 md:gap-4 mb-1 md:mb-2">
+                <div className="w-1 h-1 bg-black rounded-full"></div>
+                <div className="w-1 h-1 bg-black rounded-full"></div>
               </div>
-              <div className="w-8 h-1.5 bg-green-900 rounded-full mb-1"></div>
-              <div className="w-6 h-1.5 border-b-2 border-green-800 rounded-full"></div>
+              <div className="w-6 h-1 md:w-8 md:h-1.5 bg-green-900 rounded-full mb-0.5"></div>
+              <div className="w-4 h-1 md:w-6 md:h-1.5 border-b-2 border-green-800 rounded-full"></div>
             </div>
           </div>
-          <div className="text-red-500 text-3xl font-black mt-2 select-none">
+          <div className="text-red-500 text-2xl md:text-3xl font-black mt-1 md:mt-2">
             ♥
           </div>
         </Card>
@@ -167,26 +165,26 @@ const Hero = () => {
 
       {/* Main Content */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="z-10 max-w-6xl flex flex-col items-center px-4"
+        className="z-10 w-full max-w-6xl flex flex-col items-center px-4"
       >
-        <Logo className="mb-20 transform scale-90 md:scale-100" />
+        <Logo className="mb-12 md:mb-20 transform scale-[0.7] md:scale-100 origin-center" />
 
-        <div className="space-y-3 mb-16 text-center">
-          <p className="text-2xl md:text-3xl font-black text-white drop-shadow-lg uppercase tracking-tight">
+        <div className="space-y-4 mb-12 md:mb-16 text-center">
+          <p className="text-xl md:text-3xl font-black text-white drop-shadow-xl uppercase tracking-tighter max-w-lg md:max-w-none">
             Think you can hold the ace and still get away?
           </p>
-          <p className="text-xl md:text-2xl font-bold text-white/90 uppercase tracking-tight">
+          <p className="text-lg md:text-2xl font-bold text-white/90 uppercase tracking-tighter">
             Can you avoid being the Bhabhi?
           </p>
-          <p className="text-xl md:text-2xl font-bold text-white uppercase tracking-tight">
+          <p className="text-lg md:text-2xl font-bold text-white uppercase tracking-tighter">
             Thulla Expert? Let's challenge your skills!
           </p>
         </div>
 
-        <button className="btn-primary min-w-[280px] text-3xl py-6 rounded-[30px]">
+        <button className="btn-primary w-full max-w-[320px] md:max-w-[400px] text-2xl md:text-4xl py-5 md:py-8 rounded-[24px] md:rounded-[40px] uppercase italic">
           DOWNLOAD
         </button>
       </motion.div>

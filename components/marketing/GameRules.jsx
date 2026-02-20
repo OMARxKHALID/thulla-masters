@@ -31,20 +31,21 @@ const GameRules = () => {
     "0 2px 0 #533483, 0 4px 0 #533483, 0 6px 6px rgba(0,0,0,0.4)";
 
   return (
-    <section className="py-32 px-4 flex flex-col items-center relative z-10">
+    <section className="py-20 md:py-32 px-4 flex flex-col items-center relative z-10 w-full overflow-hidden">
       <h2
-        className="text-5xl md:text-7xl font-black italic text-accent-yellow mb-20 tracking-tighter uppercase"
+        className="text-4xl md:text-7xl font-black italic text-accent-yellow mb-12 md:mb-20 tracking-tighter uppercase text-center"
         style={{ textShadow: h2Shadow }}
       >
         GAME RULES
       </h2>
 
-      <div className="relative w-full max-w-4xl mx-auto flex items-center justify-between gap-4 md:gap-8">
-        <button className="text-white hover:scale-110 transition-transform drop-shadow-2xl p-2 hidden md:block">
-          <ChevronLeft size={64} strokeWidth={6} />
+      <div className="relative w-full max-w-5xl mx-auto flex items-center justify-between gap-1 md:gap-4">
+        {/* Navigation Buttons visible on mobile but smaller */}
+        <button className="text-white hover:scale-110 transition-transform drop-shadow-2xl p-1 md:p-3 flex-shrink-0">
+          <ChevronLeft className="w-8 h-8 md:w-16 md:h-16" strokeWidth={6} />
         </button>
 
-        <div className="flex flex-1 justify-center items-end gap-3 md:gap-8">
+        <div className="flex flex-1 justify-center items-end gap-1.5 md:gap-8 min-w-0">
           <PlayerAvatar
             name="Player 1"
             label="7 CARDS REMAINING"
@@ -54,24 +55,24 @@ const GameRules = () => {
 
           {/* Card 1 */}
           <motion.div
-            whileHover={{ y: -10, rotate: -3 }}
-            className="w-24 h-32 md:w-36 md:h-52 bg-white rounded-2xl shadow-2xl border-2 border-gray-100 flex flex-col items-center justify-center relative translate-y-[-15px]"
+            whileHover={{ y: -5, rotate: -2 }}
+            className="w-14 h-20 md:w-36 md:h-[200px] bg-white rounded-lg md:rounded-2xl shadow-xl border md:border-2 border-gray-100 flex flex-col items-center justify-center relative translate-y-[-10px] md:translate-y-[-15px] flex-shrink-0"
           >
-            <span className="absolute top-2 left-3 text-black font-black text-2xl md:text-4xl">
+            <span className="absolute top-1 left-1.5 md:top-2 md:left-3 text-black font-black text-sm md:text-4xl">
               3
             </span>
-            <span className="text-black text-6xl md:text-9xl">♠</span>
+            <span className="text-black text-3xl md:text-9xl">♠</span>
           </motion.div>
 
           {/* Card 2 */}
           <motion.div
-            whileHover={{ y: -10, rotate: 3 }}
-            className="w-24 h-32 md:w-36 md:h-52 bg-white rounded-2xl shadow-2xl border-2 border-gray-100 flex flex-col items-center justify-center relative translate-y-[-15px]"
+            whileHover={{ y: -5, rotate: 2 }}
+            className="w-14 h-20 md:w-36 md:h-[200px] bg-white rounded-lg md:rounded-2xl shadow-xl border md:border-2 border-gray-100 flex flex-col items-center justify-center relative translate-y-[-10px] md:translate-y-[-15px] flex-shrink-0"
           >
-            <span className="absolute top-2 left-3 text-black font-black text-2xl md:text-4xl">
+            <span className="absolute top-1 left-1.5 md:top-2 md:left-3 text-black font-black text-sm md:text-4xl">
               4
             </span>
-            <span className="text-black text-6xl md:text-9xl">♠</span>
+            <span className="text-black text-3xl md:text-9xl">♠</span>
           </motion.div>
 
           <PlayerAvatar
@@ -82,21 +83,21 @@ const GameRules = () => {
           />
         </div>
 
-        <button className="text-white hover:scale-110 transition-transform drop-shadow-2xl p-2 hidden md:block">
-          <ChevronRight size={64} strokeWidth={6} />
+        <button className="text-white hover:scale-110 transition-transform drop-shadow-2xl p-1 md:p-3 flex-shrink-0">
+          <ChevronRight className="w-8 h-8 md:w-16 md:h-16" strokeWidth={6} />
         </button>
       </div>
 
-      <div className="mt-20 text-center max-w-2xl px-6">
-        <p className="text-white font-black italic text-xl md:text-3xl uppercase tracking-tighter drop-shadow-2xl leading-tight">
+      <div className="mt-12 md:mt-20 text-center max-w-2xl px-4 md:px-6">
+        <p className="text-white font-black italic text-lg md:text-3xl uppercase tracking-tighter drop-shadow-2xl leading-tight">
           WHEN DRAW A CARD, THE OPPONENT MUST HAVE{" "}
           <br className="hidden md:block" />
           AT LEAST 2 CARDS IN THEIR HAND
         </p>
       </div>
 
-      <div className="mt-16 w-full max-w-xl px-4">
-        <button className="w-full bg-[#0072BC] hover:bg-[#0081d6] text-white font-black italic text-2xl md:text-3xl py-6 rounded-[24px] shadow-[0_8px_0_#004b7c] border-t-2 border-blue-300/30 transition-all hover:translate-y-[-2px] hover:shadow-[0_10px_0_#004b7c] active:translate-y-[2px] active:shadow-none uppercase tracking-tighter">
+      <div className="mt-12 md:mt-16 w-full max-w-[320px] md:max-w-xl px-4">
+        <button className="w-full bg-[#0072BC] hover:bg-[#0081d6] text-white font-black italic text-xl md:text-3xl py-4 md:py-6 rounded-[16px] md:rounded-[24px] shadow-[0_6px_0_#004b7c] md:shadow-[0_8px_0_#004b7c] border-t-2 border-blue-300/30 transition-all hover:translate-y-[-2px] hover:shadow-[0_8px_0_#004b7c] md:hover:shadow-[0_10px_0_#004b7c] active:translate-y-[2px] active:shadow-none uppercase tracking-tighter">
           HOW TO BUY & SELL?
         </button>
       </div>
