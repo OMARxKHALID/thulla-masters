@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --background: #1162af;
+  --foreground: #ffffff;
+  /* Clean radial gradient matching the UI spotlight effect */
+  --primary-gradient: radial-gradient(
+    circle at 50% 40%,
+    #2b8ce2 0%,
+    #1162af 65%,
+    #052b53 100%
+  );
+  --button-gradient: linear-gradient(
+    180deg,
+    #b88ce8 0%,
+    #a476da 40%,
+    #8960c1 100%
+  );
+  --accent-yellow: #fecb00;
+  --nav-bg: rgba(17, 98, 175, 0.4);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent-yellow: var(--accent-yellow);
+}
+
+body {
+  background: var(--primary-gradient);
+  color: var(--foreground);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-family: "Inter", "Outfit", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Character/Suit shapes removed for a simpler clean background */
+
+@layer components {
+  .btn-primary {
+    @apply bg-[image:var(--button-gradient)] text-white font-black py-4 px-12 rounded-[24px] shadow-[0_8px_0_#533483] border-t-2 border-white/40 transition-all hover:translate-y-[-2px] hover:shadow-[0_10px_0_#533483] active:translate-y-[2px] active:shadow-none flex items-center justify-center uppercase tracking-wider text-2xl drop-shadow-xl;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
