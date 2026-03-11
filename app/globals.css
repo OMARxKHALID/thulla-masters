@@ -21,12 +21,18 @@
   --color-accent-yellow: var(--accent-yellow);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html { font-size: 16px; }
+html {
+  font-size: 16px;
+}
 
 @media (min-width: 768px) {
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -84,125 +90,40 @@ body {
     @apply text-white font-black rounded-[40px] transition-all
            hover:brightness-105 active:translate-y-[3px]
            flex items-center justify-center uppercase tracking-widest
-           select-none cursor-pointer;
+           select-none cursor-pointer
+           px-6 py-3 text-[0.9rem]
+           md:px-8 md:py-[0.9rem] md:text-[1.05rem]
+           lg:px-10 lg:py-4 lg:text-[1.2rem];
     background-image: var(--button-purple-gradient);
-    box-shadow: 0 7px 0 #7a4d9a, 0 9px 20px rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 7px 0 #7a4d9a,
+      0 9px 20px rgba(0, 0, 0, 0.3);
     border: 2px solid #c8a8da;
-    text-shadow: 1px 1px 0 #4d2a75, -1px -1px 0 #4d2a75, 0px 3px 0 #4d2a75;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
+    text-shadow:
+      1px 1px 0 #4d2a75,
+      -1px -1px 0 #4d2a75,
+      0px 3px 0 #4d2a75;
   }
-  .btn-primary-purple:active { box-shadow: 0 3px 0 #7a4d9a; }
+
+  .btn-primary-purple:active {
+    box-shadow: 0 3px 0 #7a4d9a;
+  }
 
   .btn-secondary-blue {
     @apply text-white font-black rounded-[40px] transition-all
            hover:brightness-110 active:translate-y-[3px]
            flex items-center justify-center uppercase tracking-widest
-           select-none cursor-pointer w-full;
+           select-none cursor-pointer w-full
+           px-6 py-[0.85rem] text-[0.88rem]
+           md:px-8 md:py-4 md:text-[1rem]
+           lg:px-10 lg:py-[1.15rem] lg:text-[1.15rem];
     background: #197cc4;
-    box-shadow: 0 7px 0 #0d528b, 0 9px 20px rgba(0, 0, 0, 0.25);
-    padding: 0.85rem 1.5rem;
-    font-size: 0.88rem;
+    box-shadow:
+      0 7px 0 #0d528b,
+      0 9px 20px rgba(0, 0, 0, 0.25);
   }
-  .btn-secondary-blue:active { box-shadow: 0 3px 0 #0d528b; }
-}
 
-@media (min-width: 768px) {
-  .btn-primary-purple  { padding: 0.9rem 2rem;   font-size: 1.05rem; }
-  .btn-secondary-blue  { padding: 1rem 2rem;     font-size: 1rem;    }
+  .btn-secondary-blue:active {
+    box-shadow: 0 3px 0 #0d528b;
+  }
 }
-@media (min-width: 1024px) {
-  .btn-primary-purple  { padding: 1rem 2.5rem;   font-size: 1.2rem;  }
-  .btn-secondary-blue  { padding: 1.15rem 2.5rem; font-size: 1.15rem; }
-}
-
-/* ── Hero floating card sizes ──────────────────────────── */
-.hero-card-sm  { width: 130px; height: 170px; border-radius: 10px; }
-.hero-card-lg  { width: 150px; height: 196px; border-radius: 10px; }
-.card-rank     { font-size: 18px; font-weight: 900; line-height: 1; }
-.card-corner-suit { font-size: 11px; line-height: 1; }
-.card-center-suit { font-size: 50px; }
-
-@media (min-width: 640px) {
-  .hero-card-sm { width: 148px; height: 193px; }
-  .hero-card-lg { width: 168px; height: 218px; }
-}
-@media (min-width: 1024px) {
-  .hero-card-sm { width: 165px; height: 215px; border-radius: 14px; }
-  .hero-card-lg { width: 185px; height: 240px; border-radius: 14px; }
-  .card-rank        { font-size: 24px; }
-  .card-corner-suit { font-size: 14px; }
-  .card-center-suit { font-size: 68px; }
-}
-
-/* ── GameRules playing cards ───────────────────────────── */
-.game-card { width: 68px; height: 92px; border-radius: 7px; margin: 0 3px; }
-.game-card-rank  { font-size: 1rem;  font-weight: 900; line-height: 1; }
-.game-card-suit  { font-size: 2.2rem; }
-
-@media (min-width: 640px) {
-  .game-card      { width: 96px; height: 130px; border-radius: 9px; margin: 0 5px; }
-  .game-card-rank { font-size: 1.3rem; }
-  .game-card-suit { font-size: 3rem; }
-}
-@media (min-width: 1024px) {
-  .game-card      { width: 136px; height: 185px; border-radius: 12px; margin: 0 8px; }
-  .game-card-rank { font-size: 1.7rem; }
-  .game-card-suit { font-size: 4.2rem; }
-}
-
-/* ── GameRules player avatar ───────────────────────────── */
-.avatar-title { font-size: 0.55rem; width: 70px;  line-height: 1.2; }
-.avatar-box   { width: 64px;  height: 78px;  }
-.avatar-badge { width: 20px;  height: 20px;  right: -12px; top: 26%; font-size: 10px; }
-
-@media (min-width: 640px) {
-  .avatar-title { font-size: 0.68rem; width: 100px; }
-  .avatar-box   { width: 88px;  height: 108px; }
-  .avatar-badge { width: 25px; height: 25px; right: -15px; font-size: 12px; }
-}
-@media (min-width: 1024px) {
-  .avatar-title { font-size: 0.82rem; width: 130px; }
-  .avatar-box   { width: 120px; height: 146px; }
-  .avatar-badge { width: 30px; height: 30px; right: -18px; font-size: 14px; }
-}
-
-/* ── Footer character ──────────────────────────────────── */
-.char-wrap   { width: 110px; }
-.char-body   { height: 185px; }
-.char-crown  { height: 18px;  }
-.char-face   { width: 38px; height: 38px; margin-top: 12px; }
-.char-suit   { width: 16px; height: 16px; margin-top: 4px;  font-size: 0.55rem; }
-.char-eye    { width: 4px;  height: 4px;  }
-.char-brow   { width: 7px;  height: 2px;  }
-.char-brow-alt { width: 7px;  height: 2px;  }
-.char-mouth  { width: 12px; }
-.char-beard  { width: 16px; height: 5px; }
-
-@media (min-width: 640px) {
-  .char-wrap  { width: 180px; }
-  .char-body  { height: 260px; }
-  .char-crown { height: 28px;  }
-  .char-face  { width: 55px; height: 55px; margin-top: 18px; }
-  .char-suit  { width: 24px; height: 24px; margin-top: 8px; font-size: 0.8rem; }
-  .char-eye   { width: 5px; height: 5px; }
-  .char-brow  { width: 10px; height: 3px; }
-  .char-mouth { width: 16px; }
-  .char-beard { width: 22px; height: 7px; }
-}
-@media (min-width: 1024px) {
-  .char-wrap  { width: 260px; }
-  .char-body  { height: 340px; }
-  .char-crown { height: 38px;  }
-  .char-face  { width: 72px; height: 72px; margin-top: 26px; }
-  .char-suit  { width: 34px; height: 34px; margin-top: 10px; font-size: 1.1rem; }
-  .char-eye   { width: 7px; height: 7px; }
-  .char-brow  { width: 13px; height: 4px; }
-  .char-mouth { width: 20px; }
-  .char-beard { width: 28px; height: 10px; }
-}
-
-/* ── Social icons ──────────────────────────────────────── */
-.social-icon { width: 22px; height: 22px; }
-@media (min-width: 640px) { .social-icon { width: 28px; height: 28px; } }
-@media (min-width: 1024px) { .social-icon { width: 34px; height: 34px; } }

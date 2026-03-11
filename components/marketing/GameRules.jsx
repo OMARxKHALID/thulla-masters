@@ -50,28 +50,34 @@ const CartoonFace = ({ skinColor, hairColor }) => (
 
 const PlayerAvatar = ({ title, badge, skin, hair }) => (
   <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
-    <span className="avatar-title text-accent-yellow font-black uppercase text-center text-border-black">
+    <span
+      className="text-accent-yellow font-black uppercase text-center text-border-black
+                 text-[0.55rem] sm:text-[0.68rem] lg:text-[0.82rem]
+                 w-[70px] sm:w-[100px] lg:w-[130px]"
+      style={{ lineHeight: 1.2 }}
+    >
       {title}
     </span>
     <div className="relative">
       <div
-        className="avatar-box"
+        className="w-[64px] h-[78px] sm:w-[88px] sm:h-[108px] lg:w-[120px] lg:h-[146px] relative overflow-hidden rounded-[12px]"
         style={{
           background: "linear-gradient(180deg,#1da1f2 0%,#0d59a5 100%)",
           border: "3px solid #0a74d2",
           boxShadow: "0 4px 0 rgba(10,116,210,0.5)",
-          borderRadius: "12px",
-          overflow: "hidden",
-          position: "relative",
         }}
       >
         <CartoonFace skinColor={skin} hairColor={hair} />
       </div>
       <div
-        className="avatar-badge absolute flex items-center justify-center border-2 border-black rounded"
-        style={{ background: "#fecb00", boxShadow: "0 2px 0 rgba(0,0,0,0.4)", position: "absolute" }}
+        className="absolute top-[26%] flex items-center justify-center border-2 border-black rounded
+                   w-5 h-5 sm:w-[25px] sm:h-[25px] lg:w-[30px] lg:h-[30px]
+                   -right-3 sm:-right-[15px] lg:-right-[18px]"
+        style={{ background: "#fecb00", boxShadow: "0 2px 0 rgba(0,0,0,0.4)" }}
       >
-        <span className="text-black font-black leading-none" style={{ fontSize: "inherit" }}>{badge}</span>
+        <span className="text-black font-black leading-none text-[10px] sm:text-[12px] lg:text-[14px]">
+          {badge}
+        </span>
       </div>
     </div>
   </div>
@@ -80,19 +86,35 @@ const PlayerAvatar = ({ title, badge, skin, hair }) => (
 const PlayingCard = ({ value, suit, red }) => (
   <motion.div
     whileHover={{ y: -5, scale: 1.04 }}
-    className="game-card flex-shrink-0 bg-white"
+    className="flex-shrink-0 bg-white relative flex items-center justify-center
+               w-[68px] h-[92px] rounded-[7px] mx-[3px]
+               sm:w-[96px] sm:h-[130px] sm:rounded-[9px] sm:mx-[5px]
+               lg:w-[136px] lg:h-[185px] lg:rounded-[12px] lg:mx-[8px]"
     style={{
       boxShadow: "0 8px 18px rgba(0,0,0,0.35)",
       border: "1.5px solid #e5e7eb",
-      position: "relative",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
     }}
   >
-    <span className="game-card-rank" style={{ position: "absolute", top: "5%", left: "8%", color: red ? "#ef4444" : "#111" }}>{value}</span>
-    <span className="game-card-suit" style={{ color: red ? "#ef4444" : "#111", marginTop: "4%" }}>{suit}</span>
-    <span className="game-card-rank" style={{ position: "absolute", bottom: "5%", right: "8%", color: red ? "#ef4444" : "#111", transform: "rotate(180deg)" }}>{value}</span>
+    <span
+      className="absolute top-[5%] left-[8%] font-black leading-none
+                 text-[1rem] sm:text-[1.3rem] lg:text-[1.7rem]"
+      style={{ color: red ? "#ef4444" : "#111" }}
+    >
+      {value}
+    </span>
+    <span
+      className="text-[2.2rem] sm:text-[3rem] lg:text-[4.2rem]"
+      style={{ color: red ? "#ef4444" : "#111", marginTop: "4%" }}
+    >
+      {suit}
+    </span>
+    <span
+      className="absolute bottom-[5%] right-[8%] font-black leading-none rotate-180
+                 text-[1rem] sm:text-[1.3rem] lg:text-[1.7rem]"
+      style={{ color: red ? "#ef4444" : "#111" }}
+    >
+      {value}
+    </span>
   </motion.div>
 );
 
@@ -102,7 +124,8 @@ const ArrowBtn = ({ direction, onClick }) => (
     className="text-white hover:scale-110 active:scale-90 transition-transform drop-shadow-lg cursor-pointer"
     aria-label={direction === "left" ? "Previous rule" : "Next rule"}
   >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+      className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14">
       {direction === "left" ? (
         <path fillRule="evenodd" d="M15.28 5.22a.75.75 0 010 1.06L9.56 12l5.72 5.72a.75.75 0 01-1.06 1.06l-6.25-6.25a.75.75 0 010-1.06l6.25-6.25a.75.75 0 011.06 0z" clipRule="evenodd" />
       ) : (
@@ -121,14 +144,15 @@ const GameRules = () => {
   return (
     <section id="how-to-play" className="pt-8 pb-10 sm:pb-16 lg:pb-24 px-4 flex flex-col items-center relative z-10 w-full text-center">
       <h2
-        className="font-black uppercase text-accent-yellow text-border-black mb-6 lg:mb-14 text-[1.8rem] sm:text-[2.6rem] lg:text-[4.5rem]"
+        className="font-black uppercase text-accent-yellow text-border-black mb-6 lg:mb-14
+                   text-[1.8rem] sm:text-[2.6rem] lg:text-[4.5rem]"
         style={{ letterSpacing: "-0.02em", lineHeight: 1 }}
       >
         GAME RULES
       </h2>
 
-      <div className="relative w-full px-10 sm:px-14 lg:px-16" style={{ maxWidth: "min(98%, 760px)" }}>
-        <div style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", zIndex: 10 }}>
+      <div className="relative w-full px-10 sm:px-14 lg:px-16 max-w-[760px]">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
           <ArrowBtn direction="left" onClick={prev} />
         </div>
 
@@ -147,7 +171,7 @@ const GameRules = () => {
           </motion.div>
         </AnimatePresence>
 
-        <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 10 }}>
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
           <ArrowBtn direction="right" onClick={next} />
         </div>
       </div>
@@ -158,10 +182,9 @@ const GameRules = () => {
           <button
             key={i}
             onClick={() => setIndex(i)}
-            className="rounded-full transition-all cursor-pointer"
+            className="rounded-full transition-all cursor-pointer h-[10px]"
             style={{
               width:  i === index ? 24 : 10,
-              height: 10,
               background: i === index ? "#fecb00" : "rgba(255,255,255,0.4)",
             }}
             aria-label={`Rule ${i + 1}`}
@@ -177,8 +200,11 @@ const GameRules = () => {
           transition={{ duration: 0.25 }}
           className="mt-6 px-2 w-[95%] max-w-[560px]"
         >
-          <p className="text-white font-black uppercase text-center drop-shadow-lg text-[0.88rem] sm:text-[1.05rem] lg:text-[1.35rem]"
-            style={{ letterSpacing: "0.02em", lineHeight: 1.4 }}>
+          <p
+            className="text-white font-black uppercase text-center drop-shadow-lg
+                       text-[0.88rem] sm:text-[1.05rem] lg:text-[1.35rem]"
+            style={{ letterSpacing: "0.02em", lineHeight: 1.4 }}
+          >
             {rule.rule}
           </p>
         </motion.div>
