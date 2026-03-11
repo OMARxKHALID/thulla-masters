@@ -11,28 +11,8 @@ const NAV_LINKS = [
 ];
 
 const NavLogo = () => (
-  <a href="#home" className="flex flex-col items-start leading-none italic select-none">
-    <span
-      className="font-black uppercase text-accent-yellow text-[1.6rem] sm:text-[2rem] lg:text-[2.8rem]"
-      style={{
-        lineHeight: 1,
-        textShadow:
-          "1px 1px 0 #4d2a75,-1px -1px 0 #4d2a75,1px -1px 0 #4d2a75,-1px 1px 0 #4d2a75,0px 3px 0 #4d2a75",
-      }}
-    >
-      THULLA
-    </span>
-    <span
-      className="font-black text-[#d9cff5] text-[1.25rem] sm:text-[1.6rem] lg:text-[2.2rem]"
-      style={{
-        lineHeight: 1,
-        marginTop: "1px",
-        textShadow:
-          "1.5px 1.5px 0 #4d2a75,-1.5px -1.5px 0 #4d2a75,1.5px -1.5px 0 #4d2a75,-1.5px 1.5px 0 #4d2a75,0px 4px 0 #4d2a75",
-      }}
-    >
-      MasterS
-    </span>
+  <a href="#home" className="flex flex-col items-start leading-none select-none">
+    <img src="/ui/logo.png" alt="Thulla Masters" className="h-[36px] sm:h-[46px] lg:h-[60px] object-contain drop-shadow-lg" />
   </a>
 );
 

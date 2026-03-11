@@ -37,8 +37,10 @@ html {
 
 body {
   background-color: #1a4fbc;
-  background-image: var(--bg-pattern), var(--primary-gradient);
-  background-blend-mode: overlay, normal;
+  background-image: url('/ui/Background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--foreground);
   min-height: 100vh;
   margin: 0;
