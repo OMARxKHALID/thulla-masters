@@ -27,6 +27,7 @@
 
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -81,7 +82,7 @@ body {
 
 @layer components {
   .btn-primary-purple {
-    @apply text-white font-black py-4 px-10 rounded-[40px] transition-all
+    @apply text-white font-black rounded-[40px] transition-all
            hover:brightness-105 active:translate-y-[3px]
            flex items-center justify-center uppercase tracking-widest
            select-none cursor-pointer;
@@ -94,7 +95,8 @@ body {
       1px 1px 0 #4d2a75,
       -1px -1px 0 #4d2a75,
       0px 3px 0 #4d2a75;
-    font-size: clamp(0.9rem, 3.5vw, 1.15rem);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
+    font-size: clamp(0.9rem, 3.2vw, 1.2rem);
   }
 
   .btn-primary-purple:active {
@@ -104,14 +106,14 @@ body {
   .btn-secondary-blue {
     @apply text-white font-black rounded-[40px] transition-all
            hover:brightness-110 active:translate-y-[3px]
-           flex items-center justify-center uppercase tracking-wider
+           flex items-center justify-center uppercase tracking-widest
            select-none cursor-pointer w-full;
     background: #197cc4;
-    padding: clamp(0.85rem, 3vw, 1.1rem) clamp(1.5rem, 5vw, 2.5rem);
     box-shadow:
       0 7px 0 #0d528b,
       0 9px 20px rgba(0, 0, 0, 0.25);
-    font-size: clamp(0.85rem, 3.2vw, 1.05rem);
+    padding: clamp(0.85rem, 2.5vw, 1.15rem) clamp(1.5rem, 4vw, 2.5rem);
+    font-size: clamp(0.88rem, 3vw, 1.15rem);
   }
 
   .btn-secondary-blue:active {
