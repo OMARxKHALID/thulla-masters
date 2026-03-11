@@ -150,7 +150,7 @@ const Hero = () => {
   return (
     <section id="home" className="relative z-10">
       <div
-        className="relative w-full mx-auto px-5 pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20 overflow-hidden"
+        className="relative w-full mx-auto px-5 pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20"
         style={{ maxWidth: "min(96%, 700px)", minHeight: 460 }}
       >
         {/* Floating cards — fixed px positions so they never bleed outside the container */}
