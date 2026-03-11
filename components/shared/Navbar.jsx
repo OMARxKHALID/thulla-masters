@@ -4,6 +4,37 @@ import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
+const NavLogo = () => (
+  <Link
+    href="/"
+    className="flex flex-col items-start leading-none italic select-none"
+  >
+    <span
+      className="font-black uppercase text-accent-yellow"
+      style={{
+        fontSize: "clamp(1.25rem, 4vw, 2rem)",
+        lineHeight: 1,
+        textShadow:
+          "1px 1px 0 #4d2a75,-1px -1px 0 #4d2a75,1px -1px 0 #4d2a75,-1px 1px 0 #4d2a75,0px 3px 0 #4d2a75",
+      }}
+    >
+      THULLA
+    </span>
+    <span
+      className="font-black text-[#d9cff5]"
+      style={{
+        fontSize: "clamp(1rem, 3.2vw, 1.6rem)",
+        lineHeight: 1,
+        marginTop: "1px",
+        textShadow:
+          "1.5px 1.5px 0 #4d2a75,-1.5px -1.5px 0 #4d2a75,1.5px -1.5px 0 #4d2a75,-1.5px 1.5px 0 #4d2a75,0px 4px 0 #4d2a75",
+      }}
+    >
+      MasterS
+    </span>
+  </Link>
+);
+
 const Navbar = () => {
   const navLinks = [
     { name: "HOME", href: "#", active: true },
@@ -12,62 +43,25 @@ const Navbar = () => {
     { name: "CONTACT", href: "#" },
   ];
 
-  const logoShadow =
-    "0 1px 0 #533483, 0 2px 0 #533483, 0 3px 0 #533483, 0 4px 5px rgba(0,0,0,0.4)";
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 md:px-12 bg-transparent">
-      <div className="flex items-center">
-        <Link
-          href="/"
-          className="flex flex-col items-center leading-[0.7] italic font-black select-none group"
-        >
-          <span
-            className="text-2xl text-[#fecb00] uppercase tracking-tighter"
-            style={{ textShadow: logoShadow }}
-          >
-            THULLA
-          </span>
-          <span
-            className="text-xl text-white uppercase tracking-tighter mt-0.5"
-            style={{ textShadow: logoShadow }}
-          >
-            MASTERS
-          </span>
-        </Link>
-      </div>
-
-      <div className="hidden md:flex items-center space-x-10">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-16 py-3 sm:py-4">
+      <NavLogo />
+      <div className="flex items-center gap-3 sm:gap-6 lg:gap-10">
         {navLinks.map((link) => (
           <Link
             key={link.name}
             href={link.href}
             className={cn(
-              "text-sm font-black transition-all hover:text-accent-yellow tracking-tight",
-              link.active ? "text-accent-yellow" : "text-white",
+              "font-black uppercase tracking-tight transition-colors whitespace-nowrap",
+              link.active
+                ? "text-accent-yellow"
+                : "text-white hover:text-accent-yellow",
             )}
+            style={{ fontSize: "clamp(0.58rem, 2vw, 1rem)" }}
           >
             {link.name}
           </Link>
         ))}
-      </div>
-
-      {/* Mobile Menu Icon */}
-      <div className="md:hidden text-white">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-9 w-9"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={3}
-            d="M4 6h16M4 12h16m-16 6h16"
-          />
-        </svg>
       </div>
     </nav>
   );

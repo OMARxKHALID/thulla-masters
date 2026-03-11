@@ -3,193 +3,697 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Logo = ({ className = "" }) => (
-  <div
-    className={`relative flex flex-col items-center select-none ${className}`}
-  >
-    <div className="relative">
-      {/* Background Glow */}
-      <div className="absolute inset-[-80%] bg-purple-600/10 blur-[100px] rounded-full -z-10 animate-pulse"></div>
-
-      <div className="flex flex-col items-center leading-[0.6] italic font-black uppercase tracking-tighter">
-        <span
-          className="text-7xl md:text-[10rem] text-[#fecb00] drop-shadow-2xl"
-          style={{
-            textShadow:
-              "0 2px 0 #533483, 0 4px 0 #533483, 0 6px 0 #533483, 0 8px 0 #533483, 0 10px 0 #533483, 0 12px 15px rgba(0,0,0,0.4)",
-          }}
-        >
-          THULLA
-        </span>
-        <span
-          className="text-6xl md:text-[8rem] text-white mt-4"
-          style={{
-            textShadow:
-              "0 2px 0 #533483, 0 4px 0 #533483, 0 6px 0 #533483, 0 8px 0 #533483, 0 10px 0 #533483, 0 12px 15px rgba(0,0,0,0.4)",
-          }}
-        >
-          MASTERS
-        </span>
-      </div>
-    </div>
-  </div>
-);
-
-const Card = ({
-  children,
-  className = "",
-  color = "red",
-  suit = "♦",
-  value = "A",
-  character = false,
-}) => (
-  <div
-    className={`w-24 h-36 md:w-32 md:h-48 bg-white rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center border-2 border-gray-100/50 relative overflow-hidden ${className}`}
-  >
-    <div
-      className={`absolute top-2 left-2 ${color === "red" ? "text-red-600" : "text-black"} font-black text-xl md:text-3xl leading-none`}
-    >
-      {value}
-      <br />
-      <span className="text-sm md:text-base">{suit}</span>
-    </div>
-
-    {character ? (
-      <div className="w-full h-full pt-6 flex flex-col items-center justify-center overflow-hidden">
-        {children}
-      </div>
-    ) : (
-      <div
-        className={`${color === "red" ? "text-red-500" : "text-black"} text-6xl md:text-8xl flex-shrink-0 mb-4`}
-      >
-        {suit}
-      </div>
-    )}
-
-    <div
-      className={`absolute bottom-2 right-2 ${color === "red" ? "text-red-600" : "text-black"} font-black text-xl md:text-3xl leading-none rotate-180`}
-    >
-      {value}
-      <br />
-      <span className="text-sm md:text-base">{suit}</span>
-    </div>
-  </div>
-);
-
-const Hero = () => {
-  return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-32 px-4 overflow-hidden text-center">
-      {/* Background Decorative Elements (Floating Cards) */}
-      <motion.div
-        className="absolute top-[8%] left-[2%] md:left-[10%] z-0"
-        animate={{ y: [0, -20, 0], rotate: [-15, -10, -15] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Card
-          value="A"
-          suit="♦"
-          color="red"
-          className="scale-[0.6] md:scale-90"
-        />
-      </motion.div>
-
-      <motion.div
-        className="absolute top-[5%] right-[2%] md:right-[10%] z-0"
-        animate={{ y: [0, 20, 0], rotate: [15, 20, 15] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Card
-          value="J"
-          suit="♠"
-          color="black"
-          className="scale-[0.55] md:scale-75"
-        />
-      </motion.div>
-
-      <motion.div
-        className="absolute top-[35%] left-[-5%] md:left-[5%] z-0"
-        animate={{ x: [0, 10, 0], y: [0, -10, 0], rotate: [-10, -15, -10] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Card
-          value="Q"
-          suit="♥"
-          color="red"
-          character
-          className="scale-[0.7] md:scale-110"
-        >
-          <div className="w-16 h-16 md:w-28 md:h-28 bg-[#C1262B] rounded-full border-4 border-red-900 relative flex flex-col items-center pt-2 md:pt-4">
-            <div className="absolute top-0 left-0 right-0 h-6 md:h-10 bg-yellow-400 border-b-2 border-red-900"></div>
-            <div className="w-12 h-12 md:w-18 md:h-18 bg-[#FFD7BA] rounded-full border-2 border-red-900 mt-1 md:mt-2 z-10 flex flex-col items-center pt-2 md:pt-3">
-              <div className="flex gap-2 md:gap-4 mb-1 md:mb-2">
-                <div className="w-1 h-1 bg-black rounded-full"></div>
-                <div className="w-1 h-1 bg-black rounded-full"></div>
-              </div>
-              <div className="w-4 h-1.5 md:w-6 md:h-2 border-b-2 border-red-500 rounded-full"></div>
-            </div>
-          </div>
-          <div className="text-red-500 text-2xl md:text-3xl font-black mt-1 md:mt-2">
-            ♥
-          </div>
-        </Card>
-      </motion.div>
-
-      <motion.div
-        className="absolute top-[40%] right-[-5%] md:right-[5%] z-0"
-        animate={{ scale: [1, 1.05, 1], rotate: [10, 15, 10] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Card
-          value="K"
-          suit="♥"
-          color="red"
-          character
-          className="scale-[0.7] md:scale-110"
-        >
-          <div className="w-16 h-16 md:w-28 md:h-28 bg-[#1E6B2D] rounded-full border-4 border-green-900 relative flex flex-col items-center pt-2 md:pt-4">
-            <div className="absolute top-0 left-0 right-0 h-6 md:h-10 bg-yellow-400 border-b-2 border-green-900"></div>
-            <div className="w-12 h-12 md:w-18 md:h-18 bg-[#FFD7BA] rounded-full border-2 border-green-900 mt-1 md:mt-2 z-10 flex flex-col items-center pt-2 md:pt-3">
-              <div className="flex gap-2 md:gap-4 mb-1 md:mb-2">
-                <div className="w-1 h-1 bg-black rounded-full"></div>
-                <div className="w-1 h-1 bg-black rounded-full"></div>
-              </div>
-              <div className="w-6 h-1 md:w-8 md:h-1.5 bg-green-900 rounded-full mb-0.5"></div>
-              <div className="w-4 h-1 md:w-6 md:h-1.5 border-b-2 border-green-800 rounded-full"></div>
-            </div>
-          </div>
-          <div className="text-red-500 text-2xl md:text-3xl font-black mt-1 md:mt-2">
-            ♥
-          </div>
-        </Card>
-      </motion.div>
-
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="z-10 w-full max-w-6xl flex flex-col items-center px-4"
-      >
-        <Logo className="mb-12 md:mb-20 transform scale-[0.7] md:scale-100 origin-center" />
-
-        <div className="space-y-4 mb-12 md:mb-16 text-center">
-          <p className="text-xl md:text-3xl font-black text-white drop-shadow-xl uppercase tracking-tighter max-w-lg md:max-w-none">
-            Think you can hold the ace and still get away?
-          </p>
-          <p className="text-lg md:text-2xl font-bold text-white/90 uppercase tracking-tighter">
-            Can you avoid being the Bhabhi?
-          </p>
-          <p className="text-lg md:text-2xl font-bold text-white uppercase tracking-tighter">
-            Thulla Expert? Let's challenge your skills!
-          </p>
-        </div>
-
-        <button className="btn-primary w-full max-w-[320px] md:max-w-[400px] text-2xl md:text-4xl py-5 md:py-8 rounded-[24px] md:rounded-[40px] uppercase italic">
-          DOWNLOAD
-        </button>
-      </motion.div>
-    </section>
-  );
+const cardBase = {
+  background: "white",
+  overflow: "hidden",
+  position: "relative",
+  userSelect: "none",
+  flexShrink: 0,
+  boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+  border: "1px solid #e5e7eb",
 };
+
+const AceCard = () => (
+  <div
+    style={{
+      ...cardBase,
+      width: "clamp(78px, 11vw, 200px)",
+      height: "clamp(102px, 14.3vw, 260px)",
+      borderRadius: "clamp(8px, 1.1vw, 18px)",
+    }}
+  >
+    <span
+      style={{
+        position: "absolute",
+        top: "4.5%",
+        left: "8%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#ef4444",
+        fontWeight: 900,
+        lineHeight: 1,
+      }}
+    >
+      A
+    </span>
+    <span
+      style={{
+        position: "absolute",
+        top: "19%",
+        left: "8%",
+        fontSize: "clamp(9px, 1.3vw, 24px)",
+        color: "#ef4444",
+        lineHeight: 1,
+      }}
+    >
+      ♦
+    </span>
+    <div
+      style={{
+        display: "flex",
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <span style={{ fontSize: "clamp(38px, 5.5vw, 100px)", color: "#ef4444" }}>
+        ♦
+      </span>
+    </div>
+    <span
+      style={{
+        position: "absolute",
+        bottom: "4.5%",
+        right: "8%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#ef4444",
+        fontWeight: 900,
+        lineHeight: 1,
+        transform: "rotate(180deg)",
+      }}
+    >
+      A
+    </span>
+  </div>
+);
+
+const JackCard = () => (
+  <div
+    style={{
+      ...cardBase,
+      width: "clamp(78px, 11vw, 200px)",
+      height: "clamp(102px, 14.3vw, 260px)",
+      borderRadius: "clamp(8px, 1.1vw, 18px)",
+    }}
+  >
+    <span
+      style={{
+        position: "absolute",
+        top: "4.5%",
+        left: "8%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#111",
+        fontWeight: 900,
+        lineHeight: 1,
+        zIndex: 10,
+      }}
+    >
+      J
+    </span>
+    <span
+      style={{
+        position: "absolute",
+        top: "19%",
+        left: "8%",
+        fontSize: "clamp(9px, 1.3vw, 24px)",
+        color: "#111",
+        lineHeight: 1,
+        zIndex: 10,
+      }}
+    >
+      ♠
+    </span>
+    <div
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: "12%",
+        right: "12%",
+        height: "80%",
+        background: "linear-gradient(180deg,#2060c8 0%,#1a4da8 100%)",
+        borderRadius: "9999px 9999px 0 0",
+        border: "2px solid #1540a0",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "28%",
+          background: "#12308a",
+          borderRadius: "9999px 9999px 0 0",
+          borderBottom: "2px solid #0d2470",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "1.5%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "36%",
+          height: "8%",
+          background: "#f0c000",
+          borderRadius: "2px 2px 0 0",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "56%",
+          height: "30%",
+          background: "#d4956a",
+          borderRadius: "9999px",
+          border: "2px solid #b5724a",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "6%",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "14%",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "16%",
+              aspectRatio: "1",
+              background: "#1a1a1a",
+              borderRadius: "9999px 9999px 50% 50%",
+            }}
+          />
+          <div
+            style={{
+              width: "16%",
+              aspectRatio: "1",
+              background: "#1a1a1a",
+              borderRadius: "9999px 9999px 50% 50%",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            width: "36%",
+            height: "12%",
+            background: "#a05030",
+            borderRadius: 9999,
+          }}
+        />
+      </div>
+    </div>
+    <span
+      style={{
+        position: "absolute",
+        bottom: "4.5%",
+        right: "8%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#111",
+        fontWeight: 900,
+        lineHeight: 1,
+        transform: "rotate(180deg)",
+      }}
+    >
+      J
+    </span>
+  </div>
+);
+
+const QueenCard = () => (
+  <div
+    style={{
+      ...cardBase,
+      width: "clamp(92px, 13vw, 230px)",
+      height: "clamp(118px, 16.7vw, 295px)",
+      borderRadius: "clamp(8px, 1.1vw, 18px)",
+    }}
+  >
+    <span
+      style={{
+        position: "absolute",
+        top: "4%",
+        left: "7%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#ef4444",
+        fontWeight: 900,
+        lineHeight: 1,
+        zIndex: 10,
+      }}
+    >
+      Q
+    </span>
+    <span
+      style={{
+        position: "absolute",
+        top: "17%",
+        left: "7%",
+        fontSize: "clamp(9px, 1.3vw, 24px)",
+        color: "#ef4444",
+        lineHeight: 1,
+        zIndex: 10,
+      }}
+    >
+      ♦
+    </span>
+    <div
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: "10%",
+        right: "10%",
+        height: "82%",
+        background: "linear-gradient(180deg,#d9592c 0%,#c04422 100%)",
+        borderRadius: "9999px 9999px 0 0",
+        border: "2px solid #a03518",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "20%",
+          background: "#f0c000",
+          borderBottom: "2px solid #c09000",
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-evenly",
+          padding: "0 5%",
+        }}
+      >
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderBottom: "9px solid #f0c000",
+            marginTop: "-9px",
+          }}
+        />
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "6px solid transparent",
+            borderRight: "6px solid transparent",
+            borderBottom: "12px solid #f0c000",
+            marginTop: "-12px",
+          }}
+        />
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderBottom: "9px solid #f0c000",
+            marginTop: "-9px",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: "-1%",
+          top: "17%",
+          width: "20%",
+          height: "48%",
+          background: "#f0c000",
+          borderRadius: "0 0 9999px 9999px",
+          border: "1px solid #c09000",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: "-1%",
+          top: "17%",
+          width: "20%",
+          height: "48%",
+          background: "#f0c000",
+          borderRadius: "0 0 9999px 9999px",
+          border: "1px solid #c09000",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "22%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "52%",
+          height: "28%",
+          background: "#f5c9a0",
+          borderRadius: "9999px",
+          border: "2px solid #d4936a",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "5%",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "14%",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "12%",
+              aspectRatio: "1",
+              background: "#333",
+              borderRadius: "9999px",
+            }}
+          />
+          <div
+            style={{
+              width: "12%",
+              aspectRatio: "1",
+              background: "#333",
+              borderRadius: "9999px",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            width: "32%",
+            height: "10%",
+            borderBottom: "2px solid #e87474",
+            borderRadius: 9999,
+          }}
+        />
+      </div>
+    </div>
+    <span
+      style={{
+        position: "absolute",
+        bottom: "3.5%",
+        right: "7%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#ef4444",
+        fontWeight: 900,
+        lineHeight: 1,
+        transform: "rotate(180deg)",
+      }}
+    >
+      Q
+    </span>
+  </div>
+);
+
+const KingCard = () => (
+  <div
+    style={{
+      ...cardBase,
+      width: "clamp(92px, 13vw, 230px)",
+      height: "clamp(118px, 16.7vw, 295px)",
+      borderRadius: "clamp(8px, 1.1vw, 18px)",
+    }}
+  >
+    <span
+      style={{
+        position: "absolute",
+        top: "4%",
+        left: "7%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#ef4444",
+        fontWeight: 900,
+        lineHeight: 1,
+        zIndex: 10,
+      }}
+    >
+      K
+    </span>
+    <span
+      style={{
+        position: "absolute",
+        top: "17%",
+        left: "7%",
+        fontSize: "clamp(9px, 1.3vw, 24px)",
+        color: "#ef4444",
+        lineHeight: 1,
+        zIndex: 10,
+      }}
+    >
+      ♥
+    </span>
+    <div
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: "10%",
+        right: "10%",
+        height: "82%",
+        background: "linear-gradient(180deg,#cc2020 0%,#a81818 100%)",
+        borderRadius: "9999px 9999px 0 0",
+        border: "2px solid #901010",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "20%",
+          background: "#f0c000",
+          borderBottom: "2px solid #c09000",
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-evenly",
+          padding: "0 5%",
+        }}
+      >
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderBottom: "9px solid #f0c000",
+            marginTop: "-9px",
+          }}
+        />
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "6px solid transparent",
+            borderRight: "6px solid transparent",
+            borderBottom: "12px solid #f0c000",
+            marginTop: "-12px",
+          }}
+        />
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderBottom: "9px solid #f0c000",
+            marginTop: "-9px",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: "22%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "52%",
+          height: "28%",
+          background: "#f5c9a0",
+          borderRadius: "9999px",
+          border: "2px solid #d4936a",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "5%",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "12%",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "14%",
+              aspectRatio: "4/3",
+              background: "#1a1a1a",
+              borderRadius: "9999px 9999px 50% 50%",
+            }}
+          />
+          <div
+            style={{
+              width: "14%",
+              aspectRatio: "4/3",
+              background: "#1a1a1a",
+              borderRadius: "9999px 9999px 50% 50%",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            width: "46%",
+            height: "13%",
+            background: "#5c2a1a",
+            borderRadius: 9999,
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontSize: "clamp(8px, 1.2vw, 18px)",
+          color: "rgba(255,255,255,0.35)",
+        }}
+      >
+        ♥
+      </div>
+    </div>
+    <span
+      style={{
+        position: "absolute",
+        bottom: "3.5%",
+        right: "7%",
+        fontSize: "clamp(15px, 2.1vw, 40px)",
+        color: "#ef4444",
+        fontWeight: 900,
+        lineHeight: 1,
+        transform: "rotate(180deg)",
+      }}
+    >
+      K
+    </span>
+  </div>
+);
+
+const HeroLogo = () => (
+  <div
+    className="flex flex-col items-center select-none"
+    style={{ lineHeight: 0.88 }}
+  >
+    <span
+      className="font-black uppercase italic text-accent-yellow text-3d-thulla block"
+      style={{
+        fontSize: "clamp(3.5rem, 17vw, 9rem)",
+        letterSpacing: "-0.03em",
+      }}
+    >
+      THULLA
+    </span>
+    <span
+      className="font-black italic text-[#d9cff5] text-3d-masters block"
+      style={{
+        fontSize: "clamp(2.8rem, 14vw, 7.5rem)",
+        letterSpacing: "-0.02em",
+        marginTop: "-6px",
+      }}
+    >
+      MasterS
+    </span>
+  </div>
+);
+
+const Hero = () => (
+  <section className="relative flex flex-col items-center pt-[4.5rem] sm:pt-[5.5rem] lg:pt-[7rem] pb-10 sm:pb-16 lg:pb-28 px-4 overflow-hidden text-center z-10">
+    <motion.div
+      className="absolute z-0"
+      style={{ top: "8%", left: "2%" }}
+      initial={{ rotate: -28 }}
+      animate={{ y: [0, -10, 0], rotate: [-28, -22, -28] }}
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <AceCard />
+    </motion.div>
+
+    <motion.div
+      className="absolute z-0"
+      style={{ top: "7%", right: "2%" }}
+      initial={{ rotate: 18 }}
+      animate={{ y: [0, 14, 0], rotate: [18, 24, 18] }}
+      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <JackCard />
+    </motion.div>
+
+    <motion.div
+      className="absolute z-0"
+      style={{ top: "36%", left: "-1%" }}
+      initial={{ rotate: -18 }}
+      animate={{ x: [0, 6, 0], y: [0, -8, 0], rotate: [-18, -12, -18] }}
+      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <QueenCard />
+    </motion.div>
+
+    <motion.div
+      className="absolute z-0"
+      style={{ top: "40%", right: "-1%" }}
+      initial={{ rotate: 22 }}
+      animate={{ scale: [1, 1.04, 1], rotate: [22, 28, 22] }}
+      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <KingCard />
+    </motion.div>
+
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+      className="relative z-10 flex flex-col items-center px-2 mt-4 sm:mt-8 lg:mt-10 w-full"
+      style={{ maxWidth: "min(88%, 620px)" }}
+    >
+      <HeroLogo />
+
+      <div
+        className="mt-5 mb-7 space-y-1.5"
+        style={{ maxWidth: "min(90%, 440px)" }}
+      >
+        {[
+          "Think you can hold the ace and still get away?",
+          "Can you avoid being the Bhabhi?",
+          "Thulla Expert? Let\u2019s challenge your skills!",
+        ].map((line) => (
+          <p
+            key={line}
+            className="font-bold text-white drop-shadow tracking-wide"
+            style={{ fontSize: "clamp(0.82rem, 3vw, 1.15rem)" }}
+          >
+            {line}
+          </p>
+        ))}
+      </div>
+
+      <button
+        className="btn-primary-purple"
+        style={{
+          width: "clamp(160px, 45vw, 280px)",
+          paddingTop: "0.9rem",
+          paddingBottom: "0.9rem",
+        }}
+      >
+        DOWNLOAD
+      </button>
+    </motion.div>
+  </section>
+);
 
 export default Hero;
