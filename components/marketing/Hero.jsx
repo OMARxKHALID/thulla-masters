@@ -622,19 +622,14 @@ const Hero = () => {
   const handleDownload = () => {
     if (downloading) return;
     setDownloading(true);
-
-    try {
       const link = document.createElement("a");
       link.href = "/thulla-masters.apk";
       link.download = "ThullaMasters.apk";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } catch {
-      console.error("Download failed");
-    } finally {
       setTimeout(() => setDownloading(false), 2000);
-    }
+
   };
 
   return (
@@ -644,9 +639,9 @@ const Hero = () => {
           className="relative w-full mx-auto"
           style={{
             maxWidth: "min(96%, 700px)",
-            minHeight: "clamp(560px, 145vw, 820px)",
+            minHeight: "clamp(0px, 60vw, 820px)",
             paddingTop: "clamp(72px, 18vw, 110px)",
-            paddingBottom: "clamp(40px, 8vw, 80px)",
+            paddingBottom: "clamp(20px, 5vw, 80px)",
             paddingLeft: "20px",
             paddingRight: "20px",
           }}
