@@ -4,14 +4,10 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 const NavLogo = () => (
-  <a
-    href="#home"
-    className="flex flex-col items-start leading-none italic select-none"
-  >
+  <a href="#home" className="flex flex-col items-start leading-none italic select-none">
     <span
-      className="font-black uppercase text-accent-yellow"
+      className="font-black uppercase text-accent-yellow text-[1.6rem] sm:text-[2rem] lg:text-[2.8rem]"
       style={{
-        fontSize: "clamp(1.6rem, 4vw, 2.8rem)",
         lineHeight: 1,
         textShadow:
           "1px 1px 0 #4d2a75,-1px -1px 0 #4d2a75,1px -1px 0 #4d2a75,-1px 1px 0 #4d2a75,0px 3px 0 #4d2a75",
@@ -20,9 +16,8 @@ const NavLogo = () => (
       THULLA
     </span>
     <span
-      className="font-black text-[#d9cff5]"
+      className="font-black text-[#d9cff5] text-[1.25rem] sm:text-[1.6rem] lg:text-[2.2rem]"
       style={{
-        fontSize: "clamp(1.25rem, 3.2vw, 2.2rem)",
         lineHeight: 1,
         marginTop: "1px",
         textShadow:
@@ -35,10 +30,10 @@ const NavLogo = () => (
 );
 
 const NAV_LINKS = [
-  { name: "HOME", href: "#home", active: true },
+  { name: "HOME",       href: "#home",       active: true },
   { name: "HOW TO PLAY", href: "#how-to-play" },
-  { name: "BUY & SELL", href: "#how-to-play" },
-  { name: "CONTACT", href: "#contact" },
+  { name: "BUY & SELL",  href: "#how-to-play" },
+  { name: "CONTACT",    href: "#contact" },
 ];
 
 const Navbar = () => (
@@ -50,12 +45,9 @@ const Navbar = () => (
           key={link.name}
           href={link.href}
           className={cn(
-            "font-black uppercase tracking-tight transition-colors whitespace-nowrap",
-            link.active
-              ? "text-accent-yellow"
-              : "text-white hover:text-accent-yellow",
+            "font-black uppercase tracking-tight transition-colors whitespace-nowrap text-[0.65rem] sm:text-[0.85rem] lg:text-[1.1rem]",
+            link.active ? "text-accent-yellow" : "text-white hover:text-accent-yellow"
           )}
-          style={{ fontSize: "clamp(0.65rem, 2vw, 1.15rem)" }}
         >
           {link.name}
         </a>

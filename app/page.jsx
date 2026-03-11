@@ -5,11 +5,11 @@ import Footer from "@/components/shared/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen relative overflow-x-hidden">
+    <main className="min-h-screen relative overflow-x-hidden flex flex-col">
       <Navbar />
       <Hero />
       <GameRules />
-      <Footer />
+      <Footer className="mt-auto" />
     </main>
   );
 }
