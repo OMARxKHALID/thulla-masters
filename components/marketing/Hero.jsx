@@ -31,25 +31,25 @@ const Hero = () => {
         style={{ maxWidth: "min(96%, 700px)", minHeight: 460 }}
       >
         {/* Floating cards */}
-        <motion.div className="absolute z-0" style={{ top: 20, left: "-4%" }}
+        <motion.div className="absolute z-0 -left-[4%] sm:-left-[8%] lg:-left-[18%] xl:-left-[24%]" style={{ top: 20 }}
           initial={{ rotate: -28 }} animate={{ y: [0, -10, 0], rotate: [-28, -22, -28] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
           <img src="/ui/A%20of%20diamonds.png" alt="Ace of Diamonds" className="w-[120px] sm:w-[140px] lg:w-[170px] h-auto drop-shadow-2xl object-contain" />
         </motion.div>
 
-        <motion.div className="absolute z-0" style={{ top: 20, right: "-4%" }}
+        <motion.div className="absolute z-0 -right-[4%] sm:-right-[8%] lg:-right-[18%] xl:-right-[24%]" style={{ top: 20 }}
           initial={{ rotate: 18 }} animate={{ y: [0, 14, 0], rotate: [18, 24, 18] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
           <img src="/ui/JS.png" alt="Jack of Spades" className="w-[120px] sm:w-[140px] lg:w-[170px] h-auto drop-shadow-2xl object-contain" />
         </motion.div>
 
-        <motion.div className="absolute z-0" style={{ top: 210, left: "-4%" }}
+        <motion.div className="absolute z-0 -left-[4%] sm:-left-[8%] lg:-left-[18%] xl:-left-[24%]" style={{ top: 210 }}
           initial={{ rotate: -18 }} animate={{ x: [0, 6, 0], y: [0, -8, 0], rotate: [-18, -12, -18] }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}>
           <img src="/ui/QD.png" alt="Queen of Diamonds" className="w-[140px] sm:w-[160px] lg:w-[190px] h-auto drop-shadow-2xl object-contain" />
         </motion.div>
 
-        <motion.div className="absolute z-0" style={{ top: 220, right: "-4%" }}
+        <motion.div className="absolute z-0 -right-[4%] sm:-right-[8%] lg:-right-[18%] xl:-right-[24%]" style={{ top: 220 }}
           initial={{ rotate: 22 }} animate={{ scale: [1, 1.04, 1], rotate: [22, 28, 22] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}>
           <img src="/ui/KH.png" alt="King of Hearts" className="w-[140px] sm:w-[160px] lg:w-[190px] h-auto drop-shadow-2xl object-contain" />
@@ -67,7 +67,7 @@ const Hero = () => {
             {[
               "Think you can hold the ace and still get away?",
               "Can you avoid being the Bhabhi?",
-              "Thulla Expert? Let’s challenge your skills!",
+              "Thulla Expert? Let's challenge your skills!",
             ].map((line) => (
               <p key={line} className="font-bold text-white drop-shadow tracking-wide text-[0.82rem] sm:text-[0.95rem] lg:text-[1.2rem]">
                 {line}
