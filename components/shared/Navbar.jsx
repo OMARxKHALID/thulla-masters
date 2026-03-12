@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -12,7 +13,13 @@ const NAV_LINKS = [
 
 const NavLogo = () => (
   <a href="#home" className="flex flex-col items-start leading-none select-none">
-    <img src="/ui/logo.png" alt="Thulla Masters" className="h-[36px] sm:h-[46px] lg:h-[60px] object-contain drop-shadow-lg" />
+    <Image 
+      src="/ui/logo.png" 
+      alt="Thulla Masters Home" 
+      width={120} 
+      height={60} 
+      className="h-[36px] sm:h-[46px] lg:h-[60px] w-auto object-contain drop-shadow-lg" 
+    />
   </a>
 );
 
@@ -28,10 +35,12 @@ const Navbar = () => (
             "transition-transform hover:scale-105 active:scale-95 px-1 sm:px-2 flex items-center justify-center"
           )}
         >
-          <img 
+          <Image 
             src={link.src} 
             alt={link.name} 
-            className="h-[10px] sm:h-[13px] lg:h-[16px] object-contain drop-shadow-md" 
+            width={60}
+            height={16}
+            className="h-[10px] sm:h-[13px] lg:h-[16px] w-auto object-contain drop-shadow-md" 
             style={{ filter: link.active ? 'drop-shadow(0 2px 4px rgba(254,203,0,0.4))' : 'brightness(0.9) hover:brightness(1.1)' }}
           />
         </a>

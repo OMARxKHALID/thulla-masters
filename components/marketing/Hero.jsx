@@ -1,11 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const HeroLogo = () => (
   <div className="flex flex-col items-center select-none w-[220px] sm:w-[320px] md:w-[420px] lg:w-[560px] xl:w-[680px] mb-4 lg:mb-8">
-    <img src="/ui/Big%20mid%20logo.png" alt="Thulla Masters" className="w-full h-auto object-contain drop-shadow-2xl" />
+    <Image 
+      src="/ui/Big mid logo.png" 
+      alt="Thulla Masters Card Game Logo" 
+      width={680} 
+      height={213} 
+      priority
+      className="w-full h-auto object-contain drop-shadow-2xl" 
+    />
   </div>
 );
 
@@ -61,12 +69,15 @@ const Hero = () => {
           transition={{ duration: 0.7 }}
           className="relative z-10 flex flex-col items-center text-center w-full"
         >
+          <h1 className="sr-only">Thulla Masters - The Ultimate Card Battle Game</h1>
           <HeroLogo />
 
           <div className="mt-4 mb-6 sm:mb-8 flex justify-center w-[250px] sm:w-[350px] lg:w-[480px]">
-            <img 
-              src="/ui/Think%20you%20can%20hold%20the%20ace%20and%20still%20get%20away_%20Can%20you%20avoid%20be.png" 
+            <Image 
+              src="/ui/Think you can hold the ace and still get away_ Can you avoid be.png" 
               alt="Think you can hold the ace and still get away? Can you avoid being the Bhabhi? Thulla Expert? Let's challenge your skills!" 
+              width={480}
+              height={120}
               className="w-full h-auto object-contain drop-shadow-xl" 
             />
           </div>

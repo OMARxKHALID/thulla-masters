@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const SocialIcon = ({ href, label, src }) => (
@@ -11,13 +12,25 @@ const SocialIcon = ({ href, label, src }) => (
     rel="noopener noreferrer"
     className="hover:opacity-80 transition-opacity p-1 sm:p-1.5 lg:p-2 block"
   >
-    <img src={src} alt={label} className="w-[22px] h-[22px] sm:w-7 sm:h-7 lg:w-[34px] lg:h-[34px] object-contain" />
+    <Image 
+      src={src} 
+      alt={label} 
+      width={34} 
+      height={34} 
+      className="w-[22px] h-[22px] sm:w-7 sm:h-7 lg:w-[34px] lg:h-[34px] object-contain" 
+    />
   </a>
 );
 
 const FooterLogo = () => (
   <div className="flex flex-col items-center select-none pt-2 lg:pt-4">
-    <img src="/ui/logo%20bottom.png" alt="Thulla Masters" className="w-[180px] sm:w-[260px] lg:w-[360px] h-auto object-contain drop-shadow-xl" />
+    <Image 
+      src="/ui/logo bottom.png" 
+      alt="Thulla Masters" 
+      width={360} 
+      height={120} 
+      className="w-[180px] sm:w-[260px] lg:w-[360px] h-auto object-contain drop-shadow-xl" 
+    />
   </div>
 );
 
@@ -47,11 +60,23 @@ const Footer = ({ className }) => (
     />
 
     <div className="absolute bottom-0 left-0 z-20 pointer-events-none w-[120px] sm:w-[200px] lg:w-[280px]">
-      <img src="/ui/botm%20red%20queen.png" alt="Red Queen" className="w-full h-auto object-contain object-bottom" />
+      <Image 
+        src="/ui/botm red queen.png" 
+        alt="Red Queen Decoration" 
+        width={280} 
+        height={400} 
+        className="w-full h-auto object-contain object-bottom" 
+      />
     </div>
     
     <div className="absolute bottom-0 right-0 z-20 pointer-events-none w-[120px] sm:w-[200px] lg:w-[280px]">
-      <img src="/ui/bottom%20green%20joker.png" alt="Green Joker" className="w-full h-auto object-contain object-bottom" />
+      <Image 
+        src="/ui/bottom green joker.png" 
+        alt="Green Joker Decoration" 
+        width={280} 
+        height={400} 
+        className="w-full h-auto object-contain object-bottom" 
+      />
     </div>
 
     <div className="relative z-30 flex flex-col items-center gap-3 sm:gap-4 lg:gap-5 pt-3 sm:pt-5 lg:pt-6 pb-4 sm:pb-6 lg:pb-8">
@@ -64,10 +89,12 @@ const Footer = ({ className }) => (
 
       <FooterLogo />
 
-      <img 
-        src="/ui/ALL%20RIGHTS%20RESERVED%202026.png" 
+      <Image 
+        src="/ui/ALL RIGHTS RESERVED 2026.png" 
         alt="ALL RIGHTS RESERVED 2026" 
-        className="h-[8px] sm:h-[10px] lg:h-[13px] object-contain mt-2 lg:mt-4 opacity-80" 
+        width={200}
+        height={13}
+        className="h-[8px] sm:h-[10px] lg:h-[13px] w-auto object-contain mt-2 lg:mt-4 opacity-80" 
       />
     </div>
   </footer>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const ArrowBtn = ({ direction, onClick }) => (
@@ -29,9 +30,11 @@ const GameRules = () => {
       className="pt-8 pb-10 sm:pb-16 lg:pb-24 px-4 flex flex-col items-center relative z-10 w-full text-center"
     >
       <div className="mb-6 lg:mb-14 flex justify-center w-[200px] sm:w-[280px] lg:w-[380px]">
-        <img
-          src="/ui/game%20rules.png"
-          alt="Game Rules"
+        <Image
+          src="/ui/game rules.png"
+          alt="How to Play Thulla Masters Card Game"
+          width={380}
+          height={80}
           className="w-full h-auto object-contain drop-shadow-xl"
         />
       </div>
@@ -54,9 +57,11 @@ const GameRules = () => {
                 className="w-full flex-shrink-0 flex items-center justify-center p-1 sm:p-2"
               >
                 <div className="relative w-full max-w-[850px]">
-                  <img
+                  <Image
                     src={`/ui/tutorial ${i + 1}.png`}
-                    alt={`Tutorial step ${i + 1}`}
+                    alt={`Thulla Masters Tutorial Step ${i + 1}`}
+                    width={850}
+                    height={478}
                     className="w-full h-auto object-contain drop-shadow-2xl"
                   />
                 </div>
