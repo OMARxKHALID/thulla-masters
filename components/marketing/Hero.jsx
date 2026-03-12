@@ -17,19 +17,16 @@ const HeroLogo = () => (
   </div>
 );
 
-const Hero = () => {
+const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
   const [downloading, setDownloading] = useState(false);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (downloading) return;
     setDownloading(true);
-    const link = document.createElement("a");
-    link.href = "/thulla-masters.apk";
-    link.download = "ThullaMasters.apk";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(() => setDownloading(false), 2000);
+    
+    window.location.href = "/api/download";
+    
+    setTimeout(() => setDownloading(false), 800);
   };
 
   return (

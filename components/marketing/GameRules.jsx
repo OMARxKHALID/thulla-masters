@@ -18,7 +18,7 @@ const ArrowBtn = ({ direction, onClick }) => (
   </button>
 );
 
-const GameRules = () => {
+const GameRules = ({ buySellUrl = "https://www.youtube.com/" }) => {
   const [index, setIndex] = useState(0);
   const Rules = [1, 2, 3, 4, 5];
   const prev = () => setIndex((i) => (i - 1 + 5) % 5);
@@ -95,7 +95,7 @@ const GameRules = () => {
 
       <div className="mt-8 w-[95%] max-w-lg">
         <a
-          href="https://www.youtube.com/"
+          href={buySellUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-secondary-blue inline-block cursor-pointer"

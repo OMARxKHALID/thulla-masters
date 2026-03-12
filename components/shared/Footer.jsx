@@ -34,21 +34,24 @@ const FooterLogo = () => (
   </div>
 );
 
-const SOCIALS = [
-  { label: "Facebook", href: "https://www.facebook.com/", src: "/ui/facebook.png" },
-  { label: "WhatsApp", href: "https://www.whatsapp.com/", src: "/ui/whatsapp.png" },
-  { label: "TikTok", href: "https://www.tiktok.com/", src: "/ui/tiktok.png" },
-  { label: "Instagram", href: "https://www.instagram.com/", src: "/ui/instagram.png" },
-];
 
-const Footer = ({ className }) => (
-  <footer
-    id="contact"
-    className={cn(
-      "relative w-full min-h-[220px] sm:min-h-[340px] lg:min-h-[500px] pt-7 sm:pt-12 lg:pt-24",
-      className
-    )}
-  >
+
+const Footer = ({ className, socials = {} }) => {
+  const dynamicSocials = [
+    { label: "Facebook", href: socials.facebook || "https://www.facebook.com/", src: "/ui/facebook.png" },
+    { label: "WhatsApp", href: socials.whatsapp || "https://www.whatsapp.com/", src: "/ui/whatsapp.png" },
+    { label: "TikTok", href: socials.tiktok || "https://www.tiktok.com/", src: "/ui/tiktok.png" },
+    { label: "Instagram", href: socials.instagram || "https://www.instagram.com/", src: "/ui/instagram.png" },
+  ];
+
+  return (
+    <footer
+      id="contact"
+      className={cn(
+        "relative w-full min-h-[220px] sm:min-h-[340px] lg:min-h-[500px] pt-7 sm:pt-12 lg:pt-24",
+        className
+      )}
+    >
     {/* Dark arc background */}
     <div
       className="absolute bottom-0 left-0 right-0 z-0"
@@ -82,7 +85,7 @@ const Footer = ({ className }) => (
     <div className="relative z-30 flex flex-col items-center gap-3 sm:gap-4 lg:gap-5 pt-3 sm:pt-5 lg:pt-6 pb-4 sm:pb-6 lg:pb-8">
       {/* Social links */}
       <div className="flex items-center justify-center gap-3.5 sm:gap-5 lg:gap-7">
-        {SOCIALS.map((s) => (
+        {dynamicSocials.map((s) => (
           <SocialIcon key={s.label} href={s.href} label={s.label} src={s.src} />
         ))}
       </div>
@@ -97,7 +100,8 @@ const Footer = ({ className }) => (
         className="h-[8px] sm:h-[10px] lg:h-[13px] w-auto object-contain mt-2 lg:mt-4 opacity-80" 
       />
     </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
 export default Footer;
