@@ -4,10 +4,10 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { name: "HOME",        href: "#home",       active: true },
-  { name: "HOW TO PLAY", href: "#how-to-play" },
-  { name: "BUY & SELL",  href: "#how-to-play" },
-  { name: "CONTACT",     href: "#contact" },
+  { name: "HOME",        href: "#home",       src: "/ui/HOME.png", active: true },
+  { name: "HOW TO PLAY", href: "#how-to-play", src: "/ui/HOW%20TO%20PLAY.png" },
+  { name: "BUY & SELL",  href: "#how-to-play", src: "/ui/BUY%20&%20SELL.png" },
+  { name: "CONTACT",     href: "#contact",    src: "/ui/CONTACT.png" },
 ];
 
 const NavLogo = () => (
@@ -25,11 +25,15 @@ const Navbar = () => (
           key={link.name}
           href={link.href}
           className={cn(
-            "font-black uppercase tracking-tight transition-colors whitespace-nowrap text-[0.6rem] sm:text-[0.85rem] lg:text-[1.1rem]",
-            link.active ? "text-accent-yellow" : "text-white hover:text-accent-yellow"
+            "transition-transform hover:scale-105 active:scale-95 px-1 sm:px-2 flex items-center justify-center"
           )}
         >
-          {link.name}
+          <img 
+            src={link.src} 
+            alt={link.name} 
+            className="h-[10px] sm:h-[13px] lg:h-[16px] object-contain drop-shadow-md" 
+            style={{ filter: link.active ? 'drop-shadow(0 2px 4px rgba(254,203,0,0.4))' : 'brightness(0.9) hover:brightness(1.1)' }}
+          />
         </a>
       ))}
     </div>

@@ -63,16 +63,12 @@ const Hero = () => {
         >
           <HeroLogo />
 
-          <div className="mt-4 mb-6 sm:mb-8 space-y-1.5 max-w-[88%] sm:max-w-[420px] lg:max-w-[500px]">
-            {[
-              "Think you can hold the ace and still get away?",
-              "Can you avoid being the Bhabhi?",
-              "Thulla Expert? Let's challenge your skills!",
-            ].map((line) => (
-              <p key={line} className="font-bold text-white drop-shadow tracking-wide text-[0.82rem] sm:text-[0.95rem] lg:text-[1.2rem]">
-                {line}
-              </p>
-            ))}
+          <div className="mt-4 mb-6 sm:mb-8 flex justify-center w-[250px] sm:w-[350px] lg:w-[480px]">
+            <img 
+              src="/ui/Think%20you%20can%20hold%20the%20ace%20and%20still%20get%20away_%20Can%20you%20avoid%20be.png" 
+              alt="Think you can hold the ace and still get away? Can you avoid being the Bhabhi? Thulla Expert? Let's challenge your skills!" 
+              className="w-full h-auto object-contain drop-shadow-xl" 
+            />
           </div>
 
           <button
@@ -94,7 +90,7 @@ const Hero = () => {
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2 lg:gap-3">
-                DOWNLOAD
+                <img src="/ui/DOWNLOAD.png" alt="DOWNLOAD" className="h-[14px] sm:h-[18px] lg:h-[22px] object-contain drop-shadow-sm" />
               </span>
             )}
           </button>

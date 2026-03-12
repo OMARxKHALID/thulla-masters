@@ -63,9 +63,11 @@ const Footer = ({ className }) => (
 
       <FooterLogo />
 
-      <p className="text-white font-bold uppercase tracking-widest text-[0.5rem] sm:text-[0.65rem] lg:text-[0.82rem] mt-2 lg:mt-4">
-        ALL RIGHTS RESERVED 2026
-      </p>
+      <img 
+        src="/ui/ALL%20RIGHTS%20RESERVED%202026.png" 
+        alt="ALL RIGHTS RESERVED 2026" 
+        className="h-[8px] sm:h-[10px] lg:h-[13px] object-contain mt-2 lg:mt-4 opacity-80" 
+      />
     </div>
   </footer>
 );
