@@ -66,7 +66,6 @@ const Footer = ({ className, socials = {} }) => {
         className,
       )}
     >
-      {/* Dark arc background */}
       <div
         className="absolute bottom-0 left-0 right-0 z-0"
         style={{
