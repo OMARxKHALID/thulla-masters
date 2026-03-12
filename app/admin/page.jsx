@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser, updateProfileAction } from "@/app/actions/auth";
-import { resetDownloadsAction } from "@/app/actions/settings";
+import { resetDownloadsAction, saveSettingsAction } from "@/app/actions/settings";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -108,20 +108,27 @@ export default function AdminPage() {
     setUiError("");
     setUiSuccess("");
     setSaving(true);
+    
     try {
-      const res = await fetch("/api/settings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings),
-        cache: 'no-store'
-      });
-      if (res.ok) {
+      const formData = new FormData();
+      formData.append("apkDownloadUrl", settings.apkDownloadUrl);
+      formData.append("buySellUrl", settings.buySellUrl);
+      formData.append("facebook", settings.socialLinks.facebook);
+      formData.append("whatsapp", settings.socialLinks.whatsapp);
+      formData.append("tiktok", settings.socialLinks.tiktok);
+      formData.append("instagram", settings.socialLinks.instagram);
+
+      const result = await saveSettingsAction(formData);
+      if (result.success) {
         router.refresh();
         setUiSuccess("Settings saved successfully!");
         setTimeout(() => setSaving(false), 800);
+      } else {
+        setUiError(result.error || "Failed to save settings");
+        setSaving(false);
       }
     } catch (error) {
-      setUiError("Failed to save settings");
+      setUiError("An unexpected error occurred");
       setSaving(false);
     }
   };

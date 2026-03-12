@@ -5,20 +5,23 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { name: "HOME",        href: "#home",       src: "/ui/HOME.png", active: true },
+  { name: "HOME", href: "#home", src: "/ui/HOME.png", active: true },
   { name: "HOW TO PLAY", href: "#how-to-play", src: "/ui/HOW%20TO%20PLAY.png" },
-  { name: "BUY & SELL",  href: "#how-to-play", src: "/ui/BUY%20&%20SELL.png" },
-  { name: "CONTACT",     href: "#contact",    src: "/ui/CONTACT.png" },
+  { name: "BUY & SELL", href: "#how-to-play", src: "/ui/BUY%20&%20SELL.png" },
+  { name: "CONTACT", href: "#contact", src: "/ui/CONTACT.png" },
 ];
 
 const NavLogo = () => (
-  <a href="#home" className="flex flex-col items-start leading-none select-none">
-    <Image 
-      src="/ui/logo.png" 
-      alt="Thulla Masters Home" 
-      width={120} 
-      height={60} 
-      className="h-[36px] sm:h-[46px] lg:h-[60px] w-auto object-contain drop-shadow-lg" 
+  <a
+    href="#home"
+    className="flex flex-col items-start leading-none select-none"
+  >
+    <Image
+      src="/ui/logo.png"
+      alt="Thulla Masters Home"
+      width={120}
+      height={60}
+      className="h-[36px] sm:h-[46px] lg:h-[60px] w-auto object-contain drop-shadow-lg"
     />
   </a>
 );
@@ -32,16 +35,20 @@ const Navbar = () => (
           key={link.name}
           href={link.href}
           className={cn(
-            "transition-transform hover:scale-105 active:scale-95 px-1 sm:px-2 flex items-center justify-center"
+            "transition-transform hover:scale-105 active:scale-95 px-1 sm:px-2 flex items-center justify-center",
           )}
         >
-          <Image 
-            src={link.src} 
-            alt={link.name} 
+          <Image
+            src={link.src}
+            alt={link.name}
             width={60}
             height={16}
-            className="h-[10px] sm:h-[13px] lg:h-[16px] w-auto object-contain drop-shadow-md" 
-            style={{ filter: link.active ? 'drop-shadow(0 2px 4px rgba(254,203,0,0.4))' : 'brightness(0.9) hover:brightness(1.1)' }}
+            className="h-[10px] sm:h-[13px] lg:h-[16px] w-auto object-contain drop-shadow-md"
+            style={{
+              filter: link.active
+                ? "drop-shadow(0 2px 4px rgba(254,203,0,0.4))"
+                : "brightness(0.9) hover:brightness(1.1)",
+            }}
           />
         </a>
       ))}

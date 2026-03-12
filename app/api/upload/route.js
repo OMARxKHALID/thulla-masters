@@ -2,8 +2,23 @@ import { NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
 
+import { jwtVerify } from "jose";
+import { cookies } from "next/headers";
+
+const JWT_SECRET = process.env.JWT_SECRET || "thulla-masters-secret-key-123";
+const secret = new TextEncoder().encode(JWT_SECRET);
+
 export async function POST(req) {
   try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+
+    try {
+      await jwtVerify(token, secret);
+    } catch (e) {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+    }
+
     const formData = await req.formData();
     const file = formData.get("file");
 

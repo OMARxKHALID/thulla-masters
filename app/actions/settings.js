@@ -22,25 +22,38 @@ const extractUserId = (userId) => {
 };
 
 export async function saveSettingsAction(formData) {
-  // In a real app, you'd validate the session here from cookies as well
-  // For now, we'll assume the middleware has already protected the route
+  try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) return { error: "Not authenticated" };
+
+    const { payload } = await jwtVerify(token, secret);
+    await dbConnect();
+    
+    const userId = extractUserId(payload.userId);
+    if (!userId) return { error: "Invalid session" };
+
+    const user = await User.findById(userId);
+    if (!user) return { error: "User not found" };
   
-  const socialLinks = {
-    facebook: formData.get("facebook"),
-    whatsapp: formData.get("whatsapp"),
-    tiktok: formData.get("tiktok"),
-    instagram: formData.get("instagram"),
-  };
+    const socialLinks = {
+      facebook: formData.get("facebook"),
+      whatsapp: formData.get("whatsapp"),
+      tiktok: formData.get("tiktok"),
+      instagram: formData.get("instagram"),
+    };
 
-  const data = {
-    apkDownloadUrl: formData.get("apkDownloadUrl"),
-    buySellUrl: formData.get("buySellUrl"),
-    socialLinks,
-  };
+    const data = {
+      apkDownloadUrl: formData.get("apkDownloadUrl"),
+      buySellUrl: formData.get("buySellUrl"),
+      socialLinks,
+    };
 
-  await updateSettings(data);
-  revalidatePath("/");
-  return { success: true };
+    await updateSettings(data);
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    return { error: error.message };
+  }
 }
 
 export async function resetDownloadsAction(password) {

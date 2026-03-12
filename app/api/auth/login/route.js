@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
+import { SignJWT } from "jose";
+import { cookies } from "next/headers";
 
 const JWT_SECRET = process.env.JWT_SECRET || "thulla-masters-secret-key-123";
+const secret = new TextEncoder().encode(JWT_SECRET);
 
 export async function POST(req) {
   try {
@@ -22,13 +23,13 @@ export async function POST(req) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    const token = jwt.sign(
-      { userId: user._id.toString(), email: user.email, role: user.role },
-      JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = await new SignJWT({ userId: user._id.toString(), email: user.email, role: user.role })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("1d")
+      .sign(secret);
 
-    const cookie = serialize("token", token, {
+    (await cookies()).set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -36,10 +37,7 @@ export async function POST(req) {
       path: "/",
     });
 
-    const response = NextResponse.json({ success: true });
-    response.headers.set("Set-Cookie", cookie);
-
-    return response;
+    return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

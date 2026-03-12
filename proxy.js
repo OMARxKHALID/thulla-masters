@@ -7,18 +7,23 @@ const secret = new TextEncoder().encode(JWT_SECRET);
 export async function proxy(request) {
   const token = request.cookies.get("token")?.value;
 
-  if (request.nextUrl.pathname.startsWith("/admin")) {
+  // Protect /admin and /api/upload routes
+  if (request.nextUrl.pathname.startsWith('/admin') || request.nextUrl.pathname.startsWith('/api/upload')) {
     if (!token) {
-      console.log("No token found, redirecting to login");
-      return NextResponse.redirect(new URL("/login", request.url));
+      if (request.nextUrl.pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+      }
+      return NextResponse.redirect(new URL('/login', request.url));
     }
 
     try {
       await jwtVerify(token, secret);
       return NextResponse.next();
-    } catch (e) {
-      console.log("Token verification failed:", e.message);
-      return NextResponse.redirect(new URL("/login", request.url));
+    } catch (error) {
+      if (request.nextUrl.pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+      }
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
@@ -26,5 +31,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ['/admin/:path*', '/api/upload/:path*'],
 };
