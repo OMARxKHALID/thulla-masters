@@ -19,9 +19,9 @@ const ArrowBtn = ({ direction, onClick }) => (
 
 const GameRules = () => {
   const [index, setIndex] = useState(0);
-  const Rules = [1, 2, 3, 4, 5, 6, 7];
-  const prev = () => setIndex((i) => (i - 1 + 7) % 7);
-  const next = () => setIndex((i) => (i + 1) % 7);
+  const Rules = [1, 2, 3, 4, 5];
+  const prev = () => setIndex((i) => (i - 1 + 5) % 5);
+  const next = () => setIndex((i) => (i + 1) % 5);
 
   return (
     <section
@@ -49,7 +49,10 @@ const GameRules = () => {
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
           >
             {Rules.map((rule, i) => (
-              <div key={i} className="w-full flex-shrink-0 flex items-center justify-center p-2">
+              <div
+                key={i}
+                className="w-full flex-shrink-0 flex items-center justify-center p-2"
+              >
                 <div className="relative w-full max-w-[850px]">
                   <img
                     src={`/ui/tutorial ${i + 1}.png`}
@@ -86,13 +89,17 @@ const GameRules = () => {
       {/* Rule text is intentionally omitted here because it is baked into the tutorial X.png images */}
 
       <div className="mt-8 w-[95%] max-w-lg">
-        <a 
-          href="https://www.youtube.com/" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <a
+          href="https://www.youtube.com/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="btn-secondary-blue inline-block cursor-pointer"
         >
-          <img src="/ui/HOW%20TO%20BUY%20&%20SELL_.png" alt="HOW TO BUY & SELL?" className="h-[12px] sm:h-[16px] lg:h-[20px] object-contain drop-shadow-sm inline" />
+          <img
+            src="/ui/HOW%20TO%20BUY%20&%20SELL_.png"
+            alt="HOW TO BUY & SELL?"
+            className="h-[12px] sm:h-[16px] lg:h-[20px] object-contain drop-shadow-sm inline"
+          />
         </a>
       </div>
     </section>
