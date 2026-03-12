@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const ArrowBtn = ({ direction, onClick }) => (
   <button
@@ -19,7 +19,6 @@ const ArrowBtn = ({ direction, onClick }) => (
 
 const GameRules = () => {
   const [index, setIndex] = useState(0);
-  const tutorialImage = `/ui/tutorial ${index + 1}.png`;
   const Rules = [1, 2, 3, 4, 5, 6, 7];
   const prev = () => setIndex((i) => (i - 1 + 7) % 7);
   const next = () => setIndex((i) => (i + 1) % 7);
@@ -43,24 +42,25 @@ const GameRules = () => {
         </div>
 
         {/* Carousel Content */}
-        <AnimatePresence mode="wait">
+        <div className="overflow-hidden w-full">
           <motion.div
-            key={index}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.25 }}
-            className="flex items-center justify-center p-2"
+            className="flex"
+            animate={{ x: `-${index * 100}%` }}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
           >
-            <div className="relative w-full max-w-[850px]">
-              <img
-                src={tutorialImage}
-                alt={`Tutorial step ${index + 1}`}
-                className="w-full h-auto object-contain drop-shadow-2xl"
-              />
-            </div>
+            {Rules.map((rule, i) => (
+              <div key={i} className="w-full flex-shrink-0 flex items-center justify-center p-2">
+                <div className="relative w-full max-w-[850px]">
+                  <img
+                    src={`/ui/tutorial ${i + 1}.png`}
+                    alt={`Tutorial step ${i + 1}`}
+                    className="w-full h-auto object-contain drop-shadow-2xl"
+                  />
+                </div>
+              </div>
+            ))}
           </motion.div>
-        </AnimatePresence>
+        </div>
 
         <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
           <ArrowBtn direction="right" onClick={next} />
@@ -86,9 +86,14 @@ const GameRules = () => {
       {/* Rule text is intentionally omitted here because it is baked into the tutorial X.png images */}
 
       <div className="mt-8 w-[95%] max-w-lg">
-        <button className="btn-secondary-blue">
-          <img src="/ui/HOW%20TO%20BUY%20&%20SELL_.png" alt="HOW TO BUY & SELL?" className="h-[12px] sm:h-[16px] lg:h-[20px] object-contain drop-shadow-sm" />
-        </button>
+        <a 
+          href="https://www.youtube.com/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="btn-secondary-blue inline-block cursor-pointer"
+        >
+          <img src="/ui/HOW%20TO%20BUY%20&%20SELL_.png" alt="HOW TO BUY & SELL?" className="h-[12px] sm:h-[16px] lg:h-[20px] object-contain drop-shadow-sm inline" />
+        </a>
       </div>
     </section>
   );

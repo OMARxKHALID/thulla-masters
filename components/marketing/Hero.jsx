@@ -25,7 +25,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative z-10 pt-10 sm:pt-14 lg:pt-20">
+    <section id="home" className="relative z-10 pt-20 sm:pt-28 lg:pt-36">
       <div
         className="relative w-full mx-auto px-5 pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20"
         style={{ maxWidth: "min(96%, 700px)", minHeight: 460 }}

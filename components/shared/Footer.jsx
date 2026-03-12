@@ -7,6 +7,8 @@ const SocialIcon = ({ href, label, src }) => (
   <a
     href={href}
     aria-label={label}
+    target="_blank"
+    rel="noopener noreferrer"
     className="hover:opacity-80 transition-opacity p-1 sm:p-1.5 lg:p-2 block"
   >
     <img src={src} alt={label} className="w-[22px] h-[22px] sm:w-7 sm:h-7 lg:w-[34px] lg:h-[34px] object-contain" />
@@ -20,11 +22,10 @@ const FooterLogo = () => (
 );
 
 const SOCIALS = [
-  { label: "Facebook", href: "#", src: "/ui/facebook.png" },
-  { label: "WhatsApp", href: "#", src: "/ui/whatsapp.png" },
-  { label: "TikTok", href: "#", src: "/ui/tiktok.png" },
-  { label: "Instagram", href: "#", src: "/ui/instagram.png" },
-  { label: "Email", href: "#", src: "/ui/email.png" },
+  { label: "Facebook", href: "https://www.facebook.com/", src: "/ui/facebook.png" },
+  { label: "WhatsApp", href: "https://www.whatsapp.com/", src: "/ui/whatsapp.png" },
+  { label: "TikTok", href: "https://www.tiktok.com/", src: "/ui/tiktok.png" },
+  { label: "Instagram", href: "https://www.instagram.com/", src: "/ui/instagram.png" },
 ];
 
 const Footer = ({ className }) => (
