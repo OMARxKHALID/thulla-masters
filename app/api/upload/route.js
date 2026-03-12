@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
+import { existsSync } from "fs";
 import path from "path";
 
 import { jwtVerify } from "jose";
@@ -14,7 +15,10 @@ export async function POST(req) {
     if (!token) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
     try {
-      await jwtVerify(token, secret);
+      const { payload } = await jwtVerify(token, secret);
+      if (payload.role !== 'admin') {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+      }
     } catch (e) {
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
@@ -31,7 +35,13 @@ export async function POST(req) {
 
     // Create a unique filename
     const filename = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-    const uploadPath = path.join(process.cwd(), "public", "uploads", filename);
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const uploadPath = path.join(uploadDir, filename);
+
+    // Ensure directory exists
+    if (!existsSync(uploadDir)) {
+      await mkdir(uploadDir, { recursive: true });
+    }
 
     await writeFile(uploadPath, buffer);
     const url = `/uploads/${filename}`;

@@ -49,13 +49,13 @@ export default function AdminPage() {
   const NotificationBox = ({ type, message, icon: Icon }) => {
     const isError = type === "error";
     return (
-      <div className={`mb-6 ${isError ? 'bg-red-500/10 border-red-500/20' : 'bg-green-500/10 border-green-500/20'} border rounded-2xl p-4 flex items-start gap-4 animate-in fade-in zoom-in duration-300`}>
-        <div className={`w-10 h-10 rounded-xl ${isError ? 'bg-red-500 shadow-red-500/20' : 'bg-green-500 shadow-green-500/20'} flex items-center justify-center flex-shrink-0 shadow-lg`}>
-          <Icon className="w-5 h-5 text-white" />
+      <div className={`mb-4 ${isError ? 'bg-red-500/10 border-red-500/20' : 'bg-green-500/10 border-green-500/20'} border rounded-xl p-3 flex items-start gap-3 animate-in fade-in zoom-in duration-300`}>
+        <div className={`w-8 h-8 rounded-lg ${isError ? 'bg-red-500 shadow-red-500/20' : 'bg-green-500 shadow-green-500/20'} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+          <Icon className="w-4 h-4 text-white" />
         </div>
         <div>
-          <h4 className={`font-bold text-sm ${isError ? 'text-red-500' : 'text-green-500'}`}>{isError ? 'Action Required' : 'Success'}</h4>
-          <p className={`${isError ? 'text-red-500/70' : 'text-green-500/70'} text-xs mt-0.5 leading-relaxed font-medium`}>{message}</p>
+          <h4 className={`font-bold text-xs ${isError ? 'text-red-500' : 'text-green-500'}`}>{isError ? 'Action Required' : 'Success'}</h4>
+          <p className={`${isError ? 'text-red-500/70' : 'text-green-500/70'} text-[10px] mt-0.5 leading-tight font-medium`}>{message}</p>
         </div>
       </div>
     );
@@ -87,18 +87,40 @@ export default function AdminPage() {
       }
     } catch (e) {
     } finally {
-      setTimeout(() => setSyncing(false), 800);
+      setSyncing(false);
     }
   };
 
   useEffect(() => {
     const init = async () => {
-      await fetchLatestData();
-      const user = await getCurrentUser();
-      if (user) {
-        setUserProfile(prev => ({ ...prev, name: user.name || "", email: user.email || "" }));
+      try {
+        const [settingsData, user] = await Promise.all([
+          fetch(`/api/settings?t=${Date.now()}`, { cache: 'no-store' }).then(res => res.json()),
+          getCurrentUser()
+        ]);
+        
+        if (settingsData) {
+          setSettings({
+            apkDownloadUrl: settingsData.apkDownloadUrl || "",
+            buySellUrl: settingsData.buySellUrl || "",
+            socialLinks: {
+              facebook: settingsData.socialLinks?.facebook || "",
+              whatsapp: settingsData.socialLinks?.whatsapp || "",
+              tiktok: settingsData.socialLinks?.tiktok || "",
+              instagram: settingsData.socialLinks?.instagram || "",
+            },
+            downloadCount: settingsData.downloadCount || 0,
+          });
+        }
+        
+        if (user) {
+          setUserProfile(prev => ({ ...prev, name: user.name || "", email: user.email || "" }));
+        }
+      } catch (e) {
+        console.error("Init failed", e);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     init();
   }, []);
@@ -122,7 +144,7 @@ export default function AdminPage() {
       if (result.success) {
         router.refresh();
         setUiSuccess("Settings saved successfully!");
-        setTimeout(() => setSaving(false), 800);
+        setSaving(false);
       } else {
         setUiError(result.error || "Failed to save settings");
         setSaving(false);
@@ -232,13 +254,13 @@ export default function AdminPage() {
         setUiError("");
         setUiSuccess("");
       }}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm ${
+      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all font-bold text-xs ${
         activeTab === id 
           ? "bg-yellow-400 text-zinc-900 shadow-lg shadow-yellow-400/10" 
           : "text-zinc-500 hover:bg-white/5 hover:text-white"
       }`}
     >
-      <Icon className="w-5 h-5" />
+      <Icon className="w-4 h-4" />
       {label}
     </button>
   );
@@ -257,14 +279,14 @@ export default function AdminPage() {
         transition-transform duration-300 transform lg:static lg:translate-x-0
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
-        <div className="flex items-center justify-between mb-12 px-2">
+        <div className="flex items-center justify-between mb-8 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center border border-yellow-500/50 shadow-lg shadow-yellow-400/20">
-              <ShieldCheck className="text-zinc-900 w-6 h-6" />
+            <div className="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center border border-yellow-500/50 shadow-lg shadow-yellow-400/20">
+              <ShieldCheck className="text-zinc-900 w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-white font-black tracking-tight leading-none text-lg">THULLA</h1>
-              <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mt-1">Control Center</p>
+              <h1 className="text-white font-black tracking-tight leading-none text-base">THULLA</h1>
+              <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold mt-0.5">Control Center</p>
             </div>
           </div>
           <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-zinc-500 hover:text-white">
@@ -282,93 +304,93 @@ export default function AdminPage() {
         <div className="mt-auto pt-6 border-t border-white/5">
           <button 
             onClick={logout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-600 hover:text-red-400 hover:bg-red-400/5 transition-all font-bold text-sm"
+            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-zinc-600 hover:text-red-400 hover:bg-red-400/5 transition-all font-bold text-xs"
           >
-            <LogOut className="w-5 h-5" />
+            <LogOut className="w-4 h-4" />
             Logout Session
           </button>
         </div>
       </aside>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-20 border-b border-white/5 bg-black/20 backdrop-blur-md flex items-center justify-between px-6 lg:px-10 flex-shrink-0">
-          <div className="flex items-center gap-4">
+        <header className="h-16 lg:h-20 border-b border-white/5 bg-black/20 backdrop-blur-md flex items-center justify-between px-4 lg:px-10 flex-shrink-0">
+          <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white shadow-xl transition-all active:scale-95"
+              className="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white shadow-xl transition-all active:scale-95"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button 
                 onClick={() => router.push("/")}
-                className="p-2 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-yellow-400 transition-all group"
+                className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-500 hover:text-yellow-400 transition-all group"
                 title="View Website"
               >
-                <Home className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
               </button>
-              <h2 className="text-xl font-bold text-white flex items-center gap-3">
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2.0">
                 {activeTab === 'content' ? 'Dashboard' : activeTab === 'social' ? 'Social Links' : 'Account'}
               </h2>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2">
             <button
               onClick={activeTab === 'account' ? handleUpdateProfile : handleSaveSettings}
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-2.5 bg-yellow-400 hover:bg-yellow-300 text-zinc-900 font-black rounded-xl transition-all active:scale-95 disabled:opacity-50 text-sm shadow-xl shadow-yellow-400/10"
+              className="flex items-center gap-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-300 text-zinc-900 font-black rounded-lg transition-all active:scale-95 disabled:opacity-50 text-[10px] sm:text-xs shadow-xl shadow-yellow-400/10"
             >
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              {saving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
               {saving ? "SAVING..." : activeTab === 'account' ? "UPDATE PROFILE" : "SAVE CHANGES"}
             </button>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-6 lg:p-10 flex justify-center">
+        <main className="flex-1 overflow-y-auto p-4 lg:p-10 flex justify-center">
           <div className="w-full max-w-2xl">
             {activeTab === "content" && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {uiError && <NotificationBox type="error" message={uiError} icon={X} />}
                 {uiSuccess && <NotificationBox type="success" message={uiSuccess} icon={ShieldCheck} />}
 
-                <section>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-zinc-500 text-[11px] font-black uppercase tracking-[0.2em]">Marketing Performance</h3>
-                    <div className="flex items-center gap-4">
+                <section className="space-y-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Marketing Performance</h3>
+                    <div className="flex items-center gap-3">
                       <button 
                         onClick={() => setShowResetModal(true)}
-                        className="flex items-center gap-2 text-zinc-500 hover:text-red-400 transition-all"
+                        className="flex items-center gap-1.5 text-zinc-500 hover:text-red-400 transition-all"
                         title="Reset Counter"
                       >
-                        <RotateCcw className="w-3.5 h-3.5" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Reset</span>
+                        <RotateCcw className="w-3 h-3" />
+                        <span className="text-[9px] font-black uppercase tracking-widest">Reset</span>
                       </button>
                       <button 
                         onClick={fetchLatestData}
                         disabled={syncing}
-                        className="flex items-center gap-2 text-zinc-500 hover:text-yellow-400 transition-all disabled:opacity-50"
+                        className="flex items-center gap-1.5 text-zinc-500 hover:text-yellow-400 transition-all disabled:opacity-50"
                       >
-                        <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin text-yellow-500' : ''}`} />
-                        <span className="text-[10px] font-black uppercase tracking-widest">
-                          {syncing ? 'Syncing...' : 'Refresh Stats'}
+                        <RefreshCw className={`w-3 h-3 ${syncing ? 'animate-spin text-yellow-500' : ''}`} />
+                        <span className="text-[9px] font-black uppercase tracking-widest">
+                          {syncing ? 'Syncing...' : 'Refresh'}
                         </span>
                       </button>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-yellow-400/10 to-transparent border border-yellow-400/10 rounded-3xl p-6 sm:p-8 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-8 opacity-5">
-                      <BarChart3 className="w-32 h-32 text-yellow-400" />
+                  <div className="bg-gradient-to-br from-yellow-400/10 to-transparent border border-yellow-400/10 rounded-2xl p-4 sm:p-6 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-6 opacity-5">
+                      <BarChart3 className="w-24 h-24 text-yellow-400" />
                     </div>
                     
                     <div className="flex items-center justify-between relative z-10">
-                      <div className="flex items-center gap-5">
-                        <div className="w-14 h-14 bg-yellow-400 rounded-2xl flex items-center justify-center shadow-lg shadow-yellow-400/20">
-                          <BarChart3 className="text-zinc-900 w-7 h-7" />
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-400/20">
+                          <BarChart3 className="text-zinc-900 w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-black">Total App Downloads</p>
-                          <h4 className="text-white text-4xl font-black mt-1 tracking-tight">
+                          <p className="text-zinc-500 text-[9px] uppercase tracking-widest font-black">Total App Downloads</p>
+                          <h4 className="text-white text-3xl font-black mt-0.5 tracking-tight">
                             {settings.downloadCount.toLocaleString()}
                           </h4>
                         </div>
@@ -379,22 +401,22 @@ export default function AdminPage() {
 
                 <section>
                   <h3 className="text-zinc-500 text-[11px] font-black uppercase tracking-[0.2em] mb-4">Distribution Settings</h3>
-                  <div className="bg-white/[0.03] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-8">
-                    <div className="space-y-4">
-                      <label className="text-sm font-bold text-white flex items-center gap-2 px-1">
-                        <Package className="w-4 h-4 text-yellow-400" /> APK Link
+                  <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-6">
+                    <div className="space-y-3">
+                      <label className="text-xs font-bold text-white flex items-center gap-2 px-1">
+                        <Package className="w-3.5 h-3.5 text-yellow-400" /> APK Link
                       </label>
-                      <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <input
                           type="text"
                           value={settings.apkDownloadUrl}
                           onChange={(e) => setSettings({...settings, apkDownloadUrl: e.target.value})}
-                          className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-sm focus:border-yellow-400/50 transition-all font-mono outline-none"
+                          className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xs focus:border-yellow-400/50 transition-all font-mono outline-none"
                           placeholder="e.g. /uploads/app.apk"
                         />
-                        <label className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-5 py-3 flex items-center justify-center cursor-pointer transition-all active:scale-95 h-[54px] sm:h-auto whitespace-nowrap">
-                          {uploading ? <Loader2 className="w-4 h-4 animate-spin text-yellow-400" /> : <Upload className="w-4 h-4" />}
-                          <span className="sm:hidden ml-2 text-xs font-bold">UPLOAD APK</span>
+                        <label className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-2 flex items-center justify-center cursor-pointer transition-all active:scale-95 h-[48px] sm:h-auto whitespace-nowrap">
+                          {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin text-yellow-400" /> : <Upload className="w-3.5 h-3.5" />}
+                          <span className="sm:hidden ml-2 text-[10px] font-bold">UPLOAD APK</span>
                           <input type="file" className="hidden" accept=".apk" onChange={handleFileUpload} />
                         </label>
                       </div>
@@ -402,15 +424,15 @@ export default function AdminPage() {
 
                     <div className="h-px bg-white/5" />
 
-                    <div className="space-y-4">
-                      <label className="text-sm font-bold text-white flex items-center gap-2 px-1">
-                        <SquarePlay className="w-4 h-4 text-red-500" /> Tutorial Link
+                    <div className="space-y-3">
+                      <label className="text-xs font-bold text-white flex items-center gap-2 px-1">
+                        <SquarePlay className="w-3.5 h-3.5 text-red-500" /> Tutorial Link
                       </label>
                       <input
                         type="text"
                         value={settings.buySellUrl}
                         onChange={(e) => setSettings({...settings, buySellUrl: e.target.value})}
-                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-sm focus:border-yellow-400/50 transition-all font-mono outline-none"
+                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xs focus:border-yellow-400/50 transition-all font-mono outline-none"
                         placeholder="Paste YouTube URL here..."
                       />
                     </div>
@@ -424,8 +446,8 @@ export default function AdminPage() {
                 {uiError && <NotificationBox type="error" message={uiError} icon={X} />}
                 {uiSuccess && <NotificationBox type="success" message={uiSuccess} icon={ShieldCheck} />}
 
-                <section>
-                  <h3 className="text-zinc-500 text-[11px] font-black uppercase tracking-[0.2em] mb-4">Connect Platforms</h3>
+                <section className="space-y-3">
+                  <h3 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Connect Platforms</h3>
                   <div className="bg-white/[0.03] border border-white/5 rounded-3xl p-6 sm:p-8">
                     <div className="grid grid-cols-1 gap-6">
                       {[
@@ -445,7 +467,7 @@ export default function AdminPage() {
                                 ...settings, 
                                 socialLinks: { ...settings.socialLinks, [social.id]: e.target.value } 
                               })}
-                              className="w-full bg-black/50 border border-white/5 rounded-2xl pl-12 pr-4 py-4 text-xs font-mono outline-none focus:border-white/10 transition-all"
+                              className="w-full bg-black/50 border border-white/5 rounded-2xl pl-10 pr-4 py-3 text-[11px] font-mono outline-none focus:border-white/10 transition-all"
                               placeholder={`Enter ${social.label} link`}
                             />
                           </div>
@@ -462,9 +484,9 @@ export default function AdminPage() {
                 {uiError && <NotificationBox type="error" message={uiError} icon={KeyRound} />}
                 {uiSuccess && <NotificationBox type="success" message={uiSuccess} icon={ShieldCheck} />}
 
-                <section>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-zinc-500 text-[11px] font-black uppercase tracking-[0.2em]">Administrator Profile</h3>
+                <section className="space-y-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Administrator Profile</h3>
                   </div>
 
                   <div className="bg-white/[0.03] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6">
@@ -477,7 +499,7 @@ export default function AdminPage() {
                             type="text"
                             value={userProfile.name}
                             onChange={(e) => setUserProfile({ ...userProfile, name: e.target.value })}
-                            className="w-full bg-black/50 border border-white/5 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none focus:border-white/10 transition-all"
+                            className="w-full bg-black/50 border border-white/5 rounded-2xl pl-10 pr-4 py-3 text-[11px] outline-none focus:border-white/10 transition-all"
                             placeholder="Your Name"
                           />
                         </div>
@@ -490,7 +512,7 @@ export default function AdminPage() {
                             type="email"
                             value={userProfile.email}
                             onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value })}
-                            className="w-full bg-black/50 border border-white/5 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none focus:border-white/10 transition-all font-mono"
+                            className="w-full bg-black/50 border border-white/5 rounded-2xl pl-10 pr-4 py-3 text-[11px] outline-none focus:border-white/10 transition-all font-mono"
                             placeholder="admin@example.com"
                           />
                         </div>
@@ -510,7 +532,7 @@ export default function AdminPage() {
                               type="password"
                               value={userProfile.currentPassword}
                               onChange={(e) => setUserProfile({ ...userProfile, currentPassword: e.target.value })}
-                              className="w-full bg-black/50 border border-white/5 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none focus:border-white/10 transition-all"
+                              className="w-full bg-black/50 border border-white/5 rounded-2xl pl-10 pr-4 py-3 text-[11px] outline-none focus:border-white/10 transition-all"
                               placeholder="Required to verify"
                             />
                           </div>
@@ -523,7 +545,7 @@ export default function AdminPage() {
                               type="password"
                               value={userProfile.newPassword}
                               onChange={(e) => setUserProfile({ ...userProfile, newPassword: e.target.value })}
-                              className="w-full bg-black/50 border border-white/5 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none focus:border-white/10 transition-all"
+                              className="w-full bg-black/50 border border-white/5 rounded-2xl pl-10 pr-4 py-3 text-[11px] outline-none focus:border-white/10 transition-all"
                               placeholder="Set new password"
                             />
                           </div>

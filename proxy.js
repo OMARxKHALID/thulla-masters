@@ -17,7 +17,15 @@ export async function proxy(request) {
     }
 
     try {
-      await jwtVerify(token, secret);
+      const { payload } = await jwtVerify(token, secret);
+      
+      if (payload.role !== 'admin') {
+        if (request.nextUrl.pathname.startsWith('/api/')) {
+          return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+        }
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
+      
       return NextResponse.next();
     } catch (error) {
       if (request.nextUrl.pathname.startsWith('/api/')) {

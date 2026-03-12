@@ -27,6 +27,8 @@ export async function saveSettingsAction(formData) {
     if (!token) return { error: "Not authenticated" };
 
     const { payload } = await jwtVerify(token, secret);
+    if (payload.role !== 'admin') return { error: "Unauthorized" };
+    
     await dbConnect();
     
     const userId = extractUserId(payload.userId);
@@ -62,6 +64,8 @@ export async function resetDownloadsAction(password) {
     if (!token) return { error: "Not authenticated" };
 
     const { payload } = await jwtVerify(token, secret);
+    if (payload.role !== 'admin') return { error: "Unauthorized" };
+    
     await dbConnect();
     
     const userId = extractUserId(payload.userId);
