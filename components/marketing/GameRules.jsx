@@ -36,7 +36,7 @@ const GameRules = () => {
         />
       </div>
 
-      <div className="relative w-full px-10 sm:px-14 lg:px-16 max-w-[1050px]">
+      <div className="relative w-full px-6 sm:px-14 lg:px-16 max-w-[1050px]">
         <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
           <ArrowBtn direction="left" onClick={prev} />
         </div>
@@ -51,7 +51,7 @@ const GameRules = () => {
             {Rules.map((rule, i) => (
               <div
                 key={i}
-                className="w-full flex-shrink-0 flex items-center justify-center p-2"
+                className="w-full flex-shrink-0 flex items-center justify-center p-1 sm:p-2"
               >
                 <div className="relative w-full max-w-[850px]">
                   <img
