@@ -9,6 +9,7 @@ import {
   ExternalLink, RotateCcw
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 import { getCurrentUser, updateProfileAction } from "@/app/actions/auth";
 import { resetDownloadsAction, saveSettingsAction } from "@/app/actions/settings";
 
@@ -214,20 +215,20 @@ export default function AdminPage() {
     if (!file) return;
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+    setUiError("");
+    setUiSuccess("");
 
     try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
+      const newBlob = await upload(file.name, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload/blob',
       });
-      const data = await res.json();
-      if (data.url) {
-        setSettings({ ...settings, apkDownloadUrl: data.url });
-      }
+
+      setSettings({ ...settings, apkDownloadUrl: newBlob.url });
+      setUiSuccess("APK uploaded successfully to cloud storage!");
     } catch (error) {
-      alert("Upload failed.");
+      console.error("Upload error:", error);
+      setUiError(`Upload failed: ${error.message}`);
     } finally {
       setUploading(false);
     }
