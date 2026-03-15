@@ -6,7 +6,7 @@ import {
   Facebook, MessageSquare, Instagram, Music, 
   LogOut, ShieldCheck, Upload, AppWindow, Globe2, 
   Menu, X, SquarePlay, User as UserIcon, KeyRound, Mail, BarChart3, RefreshCw, Home,
-  ExternalLink, RotateCcw
+  ExternalLink, RotateCcw, HardDrive, Trash2, Calendar, Zap, File
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
@@ -21,12 +21,16 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [activeTab, setActiveTab] = useState("content");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetPassword, setResetPassword] = useState("");
   const [isResetting, setIsResetting] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [blobs, setBlobs] = useState([]);
+  const [loadingBlobs, setLoadingBlobs] = useState(false);
+  const [isDeletingBlob, setIsDeletingBlob] = useState(null);
 
   const addToast = (message, type = "success") => {
     const id = Date.now();
@@ -90,6 +94,44 @@ export default function AdminPage() {
     }
   };
 
+  const fetchBlobs = async () => {
+    setLoadingBlobs(true);
+    try {
+      const res = await fetch('/api/admin/blobs');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setBlobs(data.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)));
+      }
+    } catch (e) {
+      addToast("Failed to fetch storage data.", "error");
+    } finally {
+      setLoadingBlobs(false);
+    }
+  };
+
+  const handleDeleteBlob = async (url) => {
+    if (!url) return;
+    setIsDeletingBlob(url);
+    try {
+      const res = await fetch('/api/admin/blobs', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setBlobs(prev => prev.filter(b => b.url !== url));
+        addToast("File permanently removed from cloud storage.");
+      } else {
+        addToast(data.error || "Failed to delete file.", "error");
+      }
+    } catch (e) {
+      addToast("A technical error occurred during deletion.", "error");
+    } finally {
+      setIsDeletingBlob(null);
+    }
+  };
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -123,6 +165,7 @@ export default function AdminPage() {
       }
     };
     init();
+    fetchBlobs();
   }, []);
 
   const handleSaveSettings = async (e) => {
@@ -224,9 +267,12 @@ export default function AdminPage() {
     setUploading(true);
 
     try {
-      const newBlob = await upload(file.name, file, {
+      const newBlob = await upload("thulla-masters.apk", file, {
         access: 'public',
         handleUploadUrl: '/api/upload/blob',
+        onUploadProgress: (progressEvent) => {
+          setUploadProgress(progressEvent.percentage);
+        },
       });
 
       if (!newBlob?.url) {
@@ -244,7 +290,25 @@ export default function AdminPage() {
       formData.append("tiktok", settings.socialLinks.tiktok);
       formData.append("instagram", settings.socialLinks.instagram);
       
+      const previousUrl = settings.apkDownloadUrl;
+      
       await saveSettingsAction(formData);
+
+      // Automatically clean up previous blob if it exists and is different
+      if (previousUrl && previousUrl.includes('vercel-storage.com') && previousUrl !== newBlob.url) {
+        try {
+          await fetch('/api/admin/blobs', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: previousUrl })
+          });
+          console.log("Cleaned up previous APK blob:", previousUrl);
+        } catch (e) {
+          console.warn("Auto-cleanup failed for previous blob:", e);
+        }
+      }
+
+      fetchBlobs(); // Refresh the list
     } catch (error) {
       let errorMessage = error.message;
       if (errorMessage.includes("BLOB_READ_WRITE_TOKEN")) {
@@ -255,6 +319,7 @@ export default function AdminPage() {
       addToast(errorMessage, "error");
     } finally {
       setUploading(false);
+      setUploadProgress(0);
       e.target.value = '';
     }
   };
@@ -324,6 +389,7 @@ export default function AdminPage() {
           <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 font-black mb-4 px-2">Management</p>
           <NavItem id="content" icon={AppWindow} label="General" />
           <NavItem id="social" icon={Globe2} label="Social Links" />
+          <NavItem id="storage" icon={HardDrive} label="Cloud Storage" />
           <NavItem id="account" icon={UserIcon} label="Account Settings" />
         </div>
 
@@ -356,7 +422,7 @@ export default function AdminPage() {
                 <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
               </button>
               <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2.0">
-                {activeTab === 'content' ? 'Dashboard' : activeTab === 'social' ? 'Social Links' : 'Account'}
+                {activeTab === 'content' ? 'Dashboard' : activeTab === 'social' ? 'Social Links' : activeTab === 'storage' ? 'Cloud Storage' : 'Account'}
               </h2>
             </div>
           </div>
@@ -444,6 +510,63 @@ export default function AdminPage() {
                           <input type="file" className="hidden" accept=".apk" onChange={handleFileUpload} />
                         </label>
                       </div>
+
+                      {uploading && (
+                        <div className="mt-4 p-5 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent border border-white/5 backdrop-blur-md relative overflow-hidden group animate-in zoom-in-95 duration-300">
+                          {/* Background Glow Detail */}
+                          <div className="absolute -right-4 -top-4 w-24 h-24 bg-yellow-400/5 blur-3xl rounded-full" />
+                          
+                          <div className="flex items-center gap-5 relative z-10">
+                            {/* Circular Progress Ring */}
+                            <div className="relative w-14 h-14 flex-shrink-0">
+                              <svg className="w-full h-full -rotate-90">
+                                <circle
+                                  cx="28"
+                                  cy="28"
+                                  r="24"
+                                  fill="transparent"
+                                  stroke="currentColor"
+                                  strokeWidth="3.5"
+                                  className="text-white/5"
+                                />
+                                <circle
+                                  cx="28"
+                                  cy="28"
+                                  r="24"
+                                  fill="transparent"
+                                  stroke="currentColor"
+                                  strokeWidth="3.5"
+                                  strokeDasharray={150.8}
+                                  strokeDashoffset={150.8 - (150.8 * uploadProgress) / 100}
+                                  strokeLinecap="round"
+                                  className="text-yellow-400 transition-all duration-500 ease-out shadow-[0_0_15px_rgba(250,204,21,0.5)]"
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <span className="text-[10px] font-black text-white">{uploadProgress}%</span>
+                              </div>
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between mb-1">
+                                <h4 className="text-white text-[10px] font-black uppercase tracking-[0.2em]">Secure Cloud Sync</h4>
+                                {uploadProgress < 100 ? (
+                                  <span className="text-[8px] font-black text-yellow-400 px-1.5 py-0.5 bg-yellow-400/10 rounded-md border border-yellow-400/20 animate-pulse">
+                                    TRANSFERRING
+                                  </span>
+                                ) : (
+                                  <span className="text-[8px] font-black text-green-400 px-1.5 py-0.5 bg-green-400/10 rounded-md border border-green-400/20">
+                                    FINALIZING
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-zinc-500 text-[10px] truncate max-w-[180px] font-medium italic">
+                                Moving <span className="text-zinc-300 not-italic font-bold">thulla-masters.apk</span> to Vercel Edge...
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="h-px bg-white/5" />
@@ -496,6 +619,103 @@ export default function AdminPage() {
                         </div>
                       ))}
                     </div>
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {activeTab === "storage" && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <section className="space-y-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Storage Management</h3>
+                    <button 
+                      onClick={fetchBlobs}
+                      disabled={loadingBlobs}
+                      className="flex items-center gap-1.5 text-zinc-500 hover:text-yellow-400 transition-all disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3 h-3 ${loadingBlobs ? 'animate-spin text-yellow-500' : ''}`} />
+                      <span className="text-[9px] font-black uppercase tracking-widest">
+                        {loadingBlobs ? 'Scanning...' : 'Scan Storage'}
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="bg-white/[0.03] border border-white/5 rounded-3xl overflow-hidden">
+                    {loadingBlobs && blobs.length === 0 ? (
+                      <div className="p-20 flex flex-col items-center justify-center gap-4">
+                        <Loader2 className="w-8 h-8 text-yellow-400 animate-spin" />
+                        <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">Retrieving assets...</p>
+                      </div>
+                    ) : blobs.length === 0 ? (
+                      <div className="p-20 flex flex-col items-center justify-center gap-4 opacity-40">
+                        <HardDrive className="w-12 h-12 text-zinc-600" />
+                        <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold text-center">
+                          Cloud storage is currently empty<br/>
+                          <span className="text-[8px] opacity-60">Upload an APK to start managing assets</span>
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-white/5">
+                        {blobs.map((blob) => (
+                          <div key={blob.url} className="p-5 flex items-center gap-4 hover:bg-white/[0.02] transition-colors group">
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+                              settings.apkDownloadUrl === blob.url 
+                                ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20" 
+                                : "bg-white/5 text-zinc-500 border border-white/5"
+                            }`}>
+                              <File className="w-6 h-6" />
+                            </div>
+                            
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-0.5">
+                                <h4 className="text-white text-[11px] font-bold truncate tracking-tight">{blob.pathname}</h4>
+                                {settings.apkDownloadUrl === blob.url && (
+                                  <span className="text-[8px] font-black bg-yellow-400 text-zinc-900 px-1.5 py-0.5 rounded-full uppercase tracking-tighter shadow-lg shadow-yellow-400/10">
+                                    ACTIVE
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-3 text-zinc-500 text-[9px] font-bold uppercase tracking-widest">
+                                <span className="flex items-center gap-1">
+                                  <Zap className="w-2.5 h-2.5" />
+                                  {(blob.size / (1024 * 1024)).toFixed(1)} MB
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="w-2.5 h-2.5" />
+                                  {new Date(blob.uploadedAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => handleDeleteBlob(blob.url)}
+                              disabled={isDeletingBlob === blob.url}
+                              className={`p-2.5 rounded-xl transition-all ${
+                                isDeletingBlob === blob.url 
+                                  ? "bg-red-500/10 text-red-500" 
+                                  : "bg-white/5 text-zinc-500 hover:bg-red-500/10 hover:text-red-500 active:scale-95"
+                              }`}
+                              title="Delete Permanently"
+                            >
+                              {isDeletingBlob === blob.url ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-4 h-4" />
+                              )}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex items-start gap-3 p-4 bg-yellow-400/5 border border-yellow-400/10 rounded-2xl">
+                    <Info className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-[10px] leading-relaxed text-zinc-400">
+                      <span className="text-yellow-400 font-bold uppercase tracking-widest mr-1">Cloud Cleanup:</span>
+                      Files are automatically synchronized. Uploading a new APK will automatically remove the previous version from storage to optimize space.
+                    </p>
                   </div>
                 </section>
               </div>

@@ -52,10 +52,6 @@ export async function POST(request) {
           }),
         };
       },
-      onUploadCompleted: async ({ blob, tokenPayload }) => {
-        const { adminEmail } = JSON.parse(tokenPayload);
-        console.log(`[Success] APK uploaded by ${adminEmail}: ${blob.url}`);
-      },
     });
 
     return NextResponse.json(jsonResponse);
