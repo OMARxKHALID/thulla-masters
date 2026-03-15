@@ -20,7 +20,18 @@ export async function GET() {
   try {
     await verifyAdmin();
     const { blobs } = await list();
-    return NextResponse.json(blobs);
+    
+    // Calculate storage quota
+    const totalBytes = blobs.reduce((acc, blob) => acc + blob.size, 0);
+    const limitBytes = 100 * 1024 * 1024; // 100MB typical hobby limit
+    const quota = {
+      used: totalBytes,
+      limit: limitBytes,
+      percentage: Math.min(Math.round((totalBytes / limitBytes) * 100), 100),
+      count: blobs.length
+    };
+
+    return NextResponse.json({ blobs, quota });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });
   }

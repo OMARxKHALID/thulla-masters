@@ -25,8 +25,11 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
     setDownloading(true);
 
     window.location.href = "/api/download";
-
-    setTimeout(() => setDownloading(false), 800);
+ 
+    setTimeout(() => {
+      setDownloading(false);
+      window.location.href = "/#home";
+    }, 1500);
   };
 
   return (

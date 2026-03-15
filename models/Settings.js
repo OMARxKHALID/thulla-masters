@@ -20,8 +20,17 @@ const SettingsSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    downloadHistory: [
+      {
+        timestamp: { type: Date, default: Date.now }
+      }
+    ],
   },
   { timestamps: true }
 );
+
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.Settings;
+}
 
 export default mongoose.models.Settings || mongoose.model("Settings", SettingsSchema);
