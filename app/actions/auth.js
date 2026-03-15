@@ -43,12 +43,7 @@ export async function loginAction(formData) {
     await dbConnect();
     const user = await User.findOne({ email });
     
-    if (!user) {
-      return { error: "Invalid credentials" };
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return { error: "Invalid credentials" };
     }
 
@@ -94,11 +89,9 @@ export async function updateProfileAction(formData) {
     const user = await User.findById(userId);
     if (!user) return { error: "User not found" };
 
-    // Verify current password
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) return { error: "Current password incorrect" };
 
-    // Update fields
     if (name) user.name = name;
     if (email) user.email = email;
     if (newPassword) {

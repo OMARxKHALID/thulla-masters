@@ -74,11 +74,9 @@ export async function resetDownloadsAction(password) {
     const user = await User.findById(userId);
     if (!user) return { error: "User not found" };
 
-    // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return { error: "Incorrect password" };
 
-    // Reset count
     await updateSettings({ downloadCount: 0 });
     
     revalidatePath("/");

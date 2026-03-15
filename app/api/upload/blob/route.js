@@ -10,7 +10,6 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    // Check if BLOB_READ_WRITE_TOKEN is configured
     if (!process.env.BLOB_READ_WRITE_TOKEN) {
       console.error("Vercel Blob configuration missing: BLOB_READ_WRITE_TOKEN is not defined.");
       return NextResponse.json(
@@ -23,7 +22,6 @@ export async function POST(request) {
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // 1. Authenticate the user session
         const token = (await cookies()).get("token")?.value;
         if (!token) {
           throw new Error('You must be logged in to upload files.');
@@ -38,13 +36,11 @@ export async function POST(request) {
           throw new Error('Your session has expired. Please log in again.');
         }
 
-        // 2. Authorize based on role
         if (payload.role !== 'admin') {
           console.warn(`Unauthorized upload attempt by user: ${payload.email}`);
           throw new Error('Only administrators are authorized to upload APK files.');
         }
 
-        // 3. Optional: Validate file extension/pathname
         if (!pathname.toLowerCase().endsWith('.apk')) {
           throw new Error('Only .apk files are allowed for security reasons.');
         }
