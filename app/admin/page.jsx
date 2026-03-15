@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
+import { ToastContainer } from "@/components/shared/Toast";
 import { getCurrentUser, updateProfileAction } from "@/app/actions/auth";
 import { resetDownloadsAction, saveSettingsAction } from "@/app/actions/settings";
+import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -21,11 +23,19 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState("content");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [uiError, setUiError] = useState("");
-  const [uiSuccess, setUiSuccess] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetPassword, setResetPassword] = useState("");
   const [isResetting, setIsResetting] = useState(false);
+  const [toasts, setToasts] = useState([]);
+
+  const addToast = (message, type = "success") => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
 
   const [settings, setSettings] = useState({
     apkDownloadUrl: "",
@@ -47,20 +57,6 @@ export default function AdminPage() {
     confirmPassword: "",
   });
 
-  const NotificationBox = ({ type, message, icon: Icon }) => {
-    const isError = type === "error";
-    return (
-      <div className={`mb-4 ${isError ? 'bg-red-500/10 border-red-500/20' : 'bg-green-500/10 border-green-500/20'} border rounded-xl p-3 flex items-start gap-3 animate-in fade-in zoom-in duration-300`}>
-        <div className={`w-8 h-8 rounded-lg ${isError ? 'bg-red-500 shadow-red-500/20' : 'bg-green-500 shadow-green-500/20'} flex items-center justify-center flex-shrink-0 shadow-lg`}>
-          <Icon className="w-4 h-4 text-white" />
-        </div>
-        <div>
-          <h4 className={`font-bold text-xs ${isError ? 'text-red-500' : 'text-green-500'}`}>{isError ? 'Action Required' : 'Success'}</h4>
-          <p className={`${isError ? 'text-red-500/70' : 'text-green-500/70'} text-[10px] mt-0.5 leading-tight font-medium`}>{message}</p>
-        </div>
-      </div>
-    );
-  };
 
   const fetchLatestData = async () => {
     setSyncing(true);
@@ -85,8 +81,10 @@ export default function AdminPage() {
           },
           downloadCount: data.downloadCount || 0,
         });
+        addToast("Dashboard data has been synchronized with the latest server state.");
       }
     } catch (e) {
+      addToast("Failed to sync data. Please check your internet connection.", "error");
     } finally {
       setSyncing(false);
     }
@@ -119,6 +117,7 @@ export default function AdminPage() {
         }
       } catch (e) {
         console.error("Init failed", e);
+        addToast("Failed to initialize dashboard. Some data might be missing.", "error");
       } finally {
         setLoading(false);
       }
@@ -128,8 +127,6 @@ export default function AdminPage() {
 
   const handleSaveSettings = async (e) => {
     if (e) e.preventDefault();
-    setUiError("");
-    setUiSuccess("");
     setSaving(true);
     
     try {
@@ -144,30 +141,28 @@ export default function AdminPage() {
       const result = await saveSettingsAction(formData);
       if (result.success) {
         router.refresh();
-        setUiSuccess("Settings saved successfully!");
+        addToast("All changes have been successfully saved to the server.");
         setSaving(false);
       } else {
-        setUiError(result.error || "Failed to save settings");
+        addToast(result.error || "Failed to save settings. Please check your connection.", "error");
         setSaving(false);
       }
     } catch (error) {
-      setUiError("An unexpected error occurred");
+      addToast("A technical error occurred while saving your changes.", "error");
       setSaving(false);
     }
   };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    setUiError("");
-    setUiSuccess("");
     
     if (!userProfile.currentPassword) {
-      setUiError("Please enter your current password to verify changes");
+      addToast("Please provide your current password for security verification.", "error");
       return;
     }
     
     if (userProfile.newPassword && userProfile.newPassword !== userProfile.confirmPassword) {
-      setUiError("New passwords do not match");
+      addToast("The new passwords you entered do not match.", "error");
       return;
     }
 
@@ -181,9 +176,9 @@ export default function AdminPage() {
     const result = await updateProfileAction(formData);
     if (result.success) {
       setUserProfile(prev => ({ ...prev, currentPassword: "", newPassword: "", confirmPassword: "" }));
-      setUiSuccess("Profile updated successfully!");
+      addToast("Your administrator profile has been updated successfully.");
     } else {
-      setUiError(result.error);
+      addToast(result.error || "Profile update failed.", "error");
     }
     setSaving(false);
   };
@@ -191,21 +186,20 @@ export default function AdminPage() {
   const handleResetDownloads = async (e) => {
     e.preventDefault();
     if (!resetPassword) {
-      setUiError("Please enter your password to reset the counter");
+      addToast("Operation failed: Admin password is required to reset counters.", "error");
       return;
     }
     
     setIsResetting(true);
-    setUiError("");
     
     const result = await resetDownloadsAction(resetPassword);
     if (result.success) {
       setSettings(prev => ({ ...prev, downloadCount: 0 }));
-      setUiSuccess("Download counter has been reset to zero.");
+      addToast("Download counter has been reset to zero.");
       setShowResetModal(false);
       setResetPassword("");
     } else {
-      setUiError(result.error || "Failed to reset counter");
+      addToast(result.error || "Authentication failed. Incorrect password.", "error");
     }
     setIsResetting(false);
   };
@@ -214,9 +208,20 @@ export default function AdminPage() {
     const file = e.target.files[0];
     if (!file) return;
 
+    if (!file.name.toLowerCase().endsWith('.apk')) {
+      addToast("Invalid file format. Only .apk files are supported.", "error");
+      e.target.value = '';
+      return;
+    }
+
+    const MAX_SIZE = 500 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      addToast("File too large. Maximum upload size allowed is 500MB.", "error");
+      e.target.value = '';
+      return;
+    }
+
     setUploading(true);
-    setUiError("");
-    setUiSuccess("");
 
     try {
       const newBlob = await upload(file.name, file, {
@@ -224,13 +229,33 @@ export default function AdminPage() {
         handleUploadUrl: '/api/upload/blob',
       });
 
+      if (!newBlob?.url) {
+        throw new Error("Upload succeeded but no URL was returned.");
+      }
+
       setSettings({ ...settings, apkDownloadUrl: newBlob.url });
-      setUiSuccess("APK uploaded successfully to cloud storage!");
+      addToast("APK uploaded successfully to cloud storage!");
+      
+      const formData = new FormData();
+      formData.append("apkDownloadUrl", newBlob.url);
+      formData.append("buySellUrl", settings.buySellUrl);
+      formData.append("facebook", settings.socialLinks.facebook);
+      formData.append("whatsapp", settings.socialLinks.whatsapp);
+      formData.append("tiktok", settings.socialLinks.tiktok);
+      formData.append("instagram", settings.socialLinks.instagram);
+      
+      await saveSettingsAction(formData);
     } catch (error) {
-      console.error("Upload error:", error);
-      setUiError(`Upload failed: ${error.message}`);
+      let errorMessage = error.message;
+      if (errorMessage.includes("BLOB_READ_WRITE_TOKEN")) {
+        errorMessage = "Cloud storage is not connected. Add 'BLOB_READ_WRITE_TOKEN' to Vercel.";
+      } else if (errorMessage.includes("401") || errorMessage.includes("logged in")) {
+        errorMessage = "Authentication expired. Please log in again.";
+      }
+      addToast(errorMessage, "error");
     } finally {
       setUploading(false);
+      e.target.value = '';
     }
   };
 
@@ -352,8 +377,6 @@ export default function AdminPage() {
           <div className="w-full max-w-2xl">
             {activeTab === "content" && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                {uiError && <NotificationBox type="error" message={uiError} icon={X} />}
-                {uiSuccess && <NotificationBox type="success" message={uiSuccess} icon={ShieldCheck} />}
 
                 <section className="space-y-3">
                   <div className="flex items-center justify-between mb-2">
@@ -444,8 +467,6 @@ export default function AdminPage() {
 
             {activeTab === "social" && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                {uiError && <NotificationBox type="error" message={uiError} icon={X} />}
-                {uiSuccess && <NotificationBox type="success" message={uiSuccess} icon={ShieldCheck} />}
 
                 <section className="space-y-3">
                   <h3 className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Connect Platforms</h3>
@@ -482,8 +503,6 @@ export default function AdminPage() {
 
             {activeTab === "account" && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                {uiError && <NotificationBox type="error" message={uiError} icon={KeyRound} />}
-                {uiSuccess && <NotificationBox type="success" message={uiSuccess} icon={ShieldCheck} />}
 
                 <section className="space-y-3">
                   <div className="flex items-center justify-between mb-2">
@@ -619,6 +638,7 @@ export default function AdminPage() {
           </form>
         </div>
       )}
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
     </div>
   );
 }

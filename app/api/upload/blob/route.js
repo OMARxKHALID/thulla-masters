@@ -7,43 +7,66 @@ const JWT_SECRET = process.env.JWT_SECRET || "thulla-masters-secret-key-123";
 const secret = new TextEncoder().encode(JWT_SECRET);
 
 export async function POST(request) {
-  const body = await request.json();
-
   try {
+    const body = await request.json();
+
+    // Check if BLOB_READ_WRITE_TOKEN is configured
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error("Vercel Blob configuration missing: BLOB_READ_WRITE_TOKEN is not defined.");
+      return NextResponse.json(
+        { error: "Storage service is not configured. Please contact your administrator." },
+        { status: 500 }
+      );
+    }
+
     const jsonResponse = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // Authenticate the user
+        // 1. Authenticate the user session
         const token = (await cookies()).get("token")?.value;
-        if (!token) throw new Error('Not authenticated');
+        if (!token) {
+          throw new Error('You must be logged in to upload files.');
+        }
 
+        let payload;
         try {
-          const { payload } = await jwtVerify(token, secret);
-          if (payload.role !== 'admin') {
-            throw new Error('Unauthorized');
-          }
+          const verified = await jwtVerify(token, secret);
+          payload = verified.payload;
         } catch (e) {
-          throw new Error('Invalid session');
+          console.error("JWT Verification failed during upload:", e.message);
+          throw new Error('Your session has expired. Please log in again.');
+        }
+
+        // 2. Authorize based on role
+        if (payload.role !== 'admin') {
+          console.warn(`Unauthorized upload attempt by user: ${payload.email}`);
+          throw new Error('Only administrators are authorized to upload APK files.');
+        }
+
+        // 3. Optional: Validate file extension/pathname
+        if (!pathname.toLowerCase().endsWith('.apk')) {
+          throw new Error('Only .apk files are allowed for security reasons.');
         }
 
         return {
           allowedContentTypes: ['application/vnd.android.package-archive', 'application/octet-stream'],
           tokenPayload: JSON.stringify({
-            // optional, sent to your website when the upload is completed
+            adminEmail: payload.email,
           }),
         };
       },
       onUploadCompleted: async ({ blob, tokenPayload }) => {
-        // This is called on your server after the upload is completed
-        console.log('Blob upload completed', blob, tokenPayload);
+        const { adminEmail } = JSON.parse(tokenPayload);
+        console.log(`[Success] APK uploaded by ${adminEmail}: ${blob.url}`);
       },
     });
 
     return NextResponse.json(jsonResponse);
   } catch (error) {
+    console.error("Vercel Blob handleUpload error:", error);
     return NextResponse.json(
-      { error: error.message },
+      { error: error.message || "An unexpected error occurred during the upload process." },
       { status: 400 },
     );
   }
