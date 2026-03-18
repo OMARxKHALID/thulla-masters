@@ -1,7 +1,16 @@
+import { Lilita_One } from "next/font/google";
 import "./globals.css";
 
+// Self-hosted via Next.js — no Google CDN round-trip, auto preload
+const lilitaOne = Lilita_One({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-lilita",
+});
+
 export const metadata = {
-  metadataBase: new URL("https://thullamasters.com"),
+  metadataBase: new URL("https://thulla-masters.vercel.app/"),
   title: {
     default: "Thulla Masters | Challenge Your Skills",
     template: "%s | Thulla Masters",
@@ -27,8 +36,9 @@ export const metadata = {
   },
   openGraph: {
     title: "Thulla Masters | Challenge Your Skills",
-    description: "The ultimate digital arena for the classic Thulla card game. Show off your mastery!",
-    url: "https://thullamasters.com",
+    description:
+      "The ultimate digital arena for the classic Thulla card game. Show off your mastery!",
+    url: "https://thulla-masters.vercel.app/",
     siteName: "Thulla Masters",
     images: [
       {
@@ -44,7 +54,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Thulla Masters | Challenge Your Skills",
-    description: "The ultimate digital arena for the classic Thulla card game. Avoid being the Bhabhi and show off your card mastery.",
+    description:
+      "The ultimate digital arena for the classic Thulla card game. Avoid being the Bhabhi and show off your card mastery.",
     creator: "@thullamasters",
     images: ["/ui/Background.png"],
   },
@@ -64,34 +75,42 @@ export const metadata = {
     apple: "/apple-icon.png",
   },
   alternates: {
-    canonical: "https://thullamasters.com",
+    canonical: "https://thulla-masters.vercel.app/",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Thulla Masters",
-  "description": "The ultimate digital arena for the classic Thulla card game. Avoid being the Bhabhi and show off your card mastery.",
-  "genre": "Card Game",
-  "playMode": "Multiplayer",
-  "applicationCategory": "Game",
-  "operatingSystem": "Android",
-  "url": "https://thullamasters.com",
-  "image": "https://thullamasters.com/opengraph-image.png",
-  "offers": {
+  name: "Thulla Masters",
+  description:
+    "The ultimate digital arena for the classic Thulla card game. Avoid being the Bhabhi and show off your card mastery.",
+  genre: "Card Game",
+  playMode: "Multiplayer",
+  applicationCategory: "Game",
+  operatingSystem: "Android",
+  url: "https://thulla-masters.vercel.app/",
+  image: "https://thulla-masters.vercel.app/opengraph-image.png",
+  offers: {
     "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock"
-  }
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={lilitaOne.variable}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {/* Preload the hero background early — prevents blank flash */}
+        <link
+          rel="preload"
+          as="image"
+          href="/ui/Background.png"
+          type="image/png"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

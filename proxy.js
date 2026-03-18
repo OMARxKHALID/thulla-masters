@@ -7,8 +7,8 @@ const secret = new TextEncoder().encode(JWT_SECRET);
 export async function proxy(request) {
   const token = request.cookies.get("token")?.value;
 
-  // Protect /admin and /api/upload routes
-  if (request.nextUrl.pathname.startsWith('/admin') || request.nextUrl.pathname.startsWith('/api/upload')) {
+  // Protect /admin routes
+  if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!token) {
       if (request.nextUrl.pathname.startsWith('/api/')) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -39,5 +39,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/upload/:path*'],
+  matcher: ['/admin/:path*'],
 };

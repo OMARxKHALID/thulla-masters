@@ -1,34 +1,31 @@
 import { NextResponse } from "next/server";
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 import dbConnect from "@/lib/mongodb";
 import Settings from "@/models/Settings";
-import { invalidateSettingsCache } from "@/lib/services/settings";
+import { revalidateTag } from "next/cache";
 
 export async function GET(request) {
   try {
     await dbConnect();
-    
-    // First, ensure the document exists and has the required fields
-    let settings = await Settings.findOne({});
-    if (!settings) {
-      settings = await Settings.create({
-        downloadCount: 0,
-        downloadHistory: []
-      });
-    }
 
-    // Now update with the new download
-    settings = await Settings.findOneAndUpdate(
-      { _id: settings._id },
-      { 
+    // Single atomic upsert — no double round-trip
+    const settings = await Settings.findOneAndUpdate(
+      {},
+      {
         $inc: { downloadCount: 1 },
-        $push: { downloadHistory: { timestamp: new Date() } }
+        $push: {
+          downloadHistory: {
+            $each: [{ timestamp: new Date() }],
+            $slice: -500, // cap array at last 500 entries
+          },
+        },
+        $setOnInsert: { apkDownloadUrl: "/thulla-masters.apk" },
       },
-      { new: true }
+      { upsert: true, returnDocument: "after" }
     ).lean();
 
-    invalidateSettingsCache();
+    // Bust settings cache so admin dashboard shows fresh count
+    revalidateTag("settings");
 
     const fileUrl = settings.apkDownloadUrl || "/thulla-masters.apk";
     const redirectUrl = new URL(fileUrl, request.url);
@@ -39,7 +36,7 @@ export async function GET(request) {
       },
     });
   } catch (error) {
-    console.error("Critical Download Error:", error);
+    console.error("Download Error:", error);
     return NextResponse.redirect(new URL("/thulla-masters.apk", request.url));
   }
 }

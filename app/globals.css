@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Lilita+One&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -37,17 +36,25 @@ html {
 
 body {
   background-color: #1a4fbc;
-  background-image: url('/ui/Background.png');
+  background-image: url("/ui/Background.png");
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  /* scroll on mobile — fixed triggers CPU repaints every frame on Android */
+  background-attachment: scroll;
   color: var(--foreground);
   min-height: 100vh;
   margin: 0;
   padding: 0;
   position: relative;
-  font-family: "Lilita One", system-ui, sans-serif;
+  font-family: var(--font-lilita), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+/* Only fixed on desktop where GPU compositing handles it fine */
+@media (min-width: 1024px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 @layer utilities {

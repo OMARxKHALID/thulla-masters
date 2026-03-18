@@ -25,7 +25,7 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
     setDownloading(true);
 
     window.location.href = "/api/download";
- 
+
     setTimeout(() => {
       setDownloading(false);
       window.location.href = "/#home";
@@ -38,7 +38,7 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
         className="relative w-full mx-auto px-5 pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20"
         style={{ maxWidth: "min(96%, 700px)", minHeight: 460 }}
       >
-        {/* Floating cards */}
+        {/* Floating cards — use Next/Image for WebP auto-conversion, proper sizing */}
         <motion.div
           className="absolute z-0 -left-[4%] sm:-left-[8%] lg:-left-[18%] xl:-left-[24%]"
           style={{ top: 20 }}
@@ -46,9 +46,11 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
           animate={{ y: [0, -10, 0], rotate: [-28, -22, -28] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img
-            src="/ui/A%20of%20diamonds.png"
+          <Image
+            src="/ui/A of diamonds.png"
             alt="Ace of Diamonds"
+            width={170}
+            height={240}
             className="w-[120px] sm:w-[140px] lg:w-[170px] h-auto drop-shadow-2xl object-contain"
           />
         </motion.div>
@@ -60,9 +62,11 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
           animate={{ y: [0, 14, 0], rotate: [18, 24, 18] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img
+          <Image
             src="/ui/JS.png"
             alt="Jack of Spades"
+            width={170}
+            height={240}
             className="w-[120px] sm:w-[140px] lg:w-[170px] h-auto drop-shadow-2xl object-contain"
           />
         </motion.div>
@@ -74,9 +78,11 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
           animate={{ x: [0, 6, 0], y: [0, -8, 0], rotate: [-18, -12, -18] }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img
+          <Image
             src="/ui/QD.png"
             alt="Queen of Diamonds"
+            width={190}
+            height={265}
             className="w-[140px] sm:w-[160px] lg:w-[190px] h-auto drop-shadow-2xl object-contain"
           />
         </motion.div>
@@ -88,9 +94,11 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
           animate={{ scale: [1, 1.04, 1], rotate: [22, 28, 22] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img
+          <Image
             src="/ui/KH.png"
             alt="King of Hearts"
+            width={190}
+            height={265}
             className="w-[140px] sm:w-[160px] lg:w-[190px] h-auto drop-shadow-2xl object-contain"
           />
         </motion.div>
@@ -157,10 +165,12 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2 lg:gap-3">
-                <img
+                <Image
                   src="/ui/DOWNLOAD.png"
                   alt="DOWNLOAD"
-                  className="h-[14px] sm:h-[18px] lg:h-[22px] object-contain drop-shadow-sm"
+                  width={88}
+                  height={22}
+                  className="h-[14px] sm:h-[18px] lg:h-[22px] w-auto object-contain drop-shadow-sm"
                 />
               </span>
             )}

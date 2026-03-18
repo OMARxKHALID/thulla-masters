@@ -1,7 +1,7 @@
 "use client";
 
-import { 
-  ShieldCheck, X, AppWindow, Globe2, HardDrive, User as UserIcon, LogOut, Home
+import {
+  ShieldCheck, X, AppWindow, Globe2, User as UserIcon, LogOut, Home
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -67,7 +67,7 @@ export default function Sidebar({ activeTab, setActiveTab, isSidebarOpen, setIsS
           <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 font-black mb-4 px-2">Management</p>
           <NavItem id="content" icon={AppWindow} label="General" />
           <NavItem id="social" icon={Globe2} label="Social Links" />
-          <NavItem id="storage" icon={HardDrive} label="Cloud Storage" />
+
           <NavItem id="account" icon={UserIcon} label="Account Settings" />
         </div>
 

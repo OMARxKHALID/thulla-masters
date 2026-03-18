@@ -6,18 +6,9 @@ import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const JWT_SECRET = process.env.JWT_SECRET || "thulla-masters-secret-key-123";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error("JWT_SECRET environment variable is not set.");
 const secret = new TextEncoder().encode(JWT_SECRET);
-
-const extractUserId = (userId) => {
-  if (!userId) return null;
-  if (typeof userId === 'string') return userId;
-  if (userId.buffer) return Buffer.from(Object.values(userId.buffer)).toString('hex');
-  if (typeof userId === 'object') {
-    return userId.toString() === "[object Object]" ? null : userId.toString();
-  }
-  return userId.toString();
-};
 
 export async function getCurrentUser() {
   const token = (await cookies()).get("token")?.value;
@@ -26,11 +17,11 @@ export async function getCurrentUser() {
   try {
     const { payload } = await jwtVerify(token, secret);
     await dbConnect();
-    const userId = extractUserId(payload.userId);
+    const userId = payload.userId?.toString();
     if (!userId) return null;
     const user = await User.findById(userId).select("-password").lean();
     return JSON.parse(JSON.stringify(user));
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -42,12 +33,16 @@ export async function loginAction(formData) {
   try {
     await dbConnect();
     const user = await User.findOne({ email });
-    
+
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return { error: "Invalid credentials" };
     }
 
-    const token = await new SignJWT({ userId: user._id.toString(), email: user.email, role: user.role })
+    const token = await new SignJWT({
+      userId: user._id.toString(),
+      email: user.email,
+      role: user.role,
+    })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime("1d")
@@ -83,9 +78,10 @@ export async function updateProfileAction(formData) {
 
     const { payload } = await jwtVerify(token, secret);
     await dbConnect();
-    const userId = extractUserId(payload.userId);
+
+    const userId = payload.userId?.toString();
     if (!userId) return { error: "Invalid user session" };
-    
+
     const user = await User.findById(userId);
     if (!user) return { error: "User not found" };
 
