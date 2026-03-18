@@ -278,7 +278,11 @@ export default function AdminPage() {
             )}
 
             {activeTab === "traffic" && (
-              <TrafficSection settings={settings} />
+              <TrafficSection 
+                settings={settings} 
+                syncing={syncing} 
+                fetchLatestData={fetchLatestData} 
+              />
             )}
 
             {activeTab === "account" && (

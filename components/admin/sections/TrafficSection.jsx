@@ -8,9 +8,14 @@ import {
   ChevronLeft,
   ChevronRight,
   Search,
+  RefreshCw,
 } from "lucide-react";
 
-export default function TrafficSection({ settings }) {
+export default function TrafficSection({ 
+  settings, 
+  syncing, 
+  fetchLatestData 
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("all");
@@ -24,7 +29,7 @@ export default function TrafficSection({ settings }) {
     const searchMatch =
       !searchQuery ||
       [entry.ip, entry.country, entry.city, entry.browser, entry.os].some(
-        (val) => val && val.toLowerCase().includes(searchQuery.toLowerCase()),
+        (val) => val && val.toLowerCase().includes(searchQuery.toLowerCase())
       );
     if (!searchMatch) return false;
 
@@ -57,7 +62,7 @@ export default function TrafficSection({ settings }) {
 
   const currentData = trafficData.slice(
     (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage,
+    safeCurrentPage * itemsPerPage
   );
 
   return (
@@ -69,9 +74,18 @@ export default function TrafficSection({ settings }) {
               <Activity className="w-4 h-4 text-emerald-500" /> Recent Traffic
               Log
             </h3>
-            <p className="xl:hidden text-[10px] font-black uppercase tracking-widest text-zinc-500 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
-              Found: {trafficData.length}
-            </p>
+            <div className="flex items-center gap-4 xl:hidden">
+               <button
+                  onClick={fetchLatestData}
+                  disabled={syncing}
+                  className="text-zinc-600 hover:text-yellow-400 transition-all disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin text-yellow-500" : ""}`} />
+                </button>
+               <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
+                Found: {trafficData.length}
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:flex items-center gap-4">
@@ -112,10 +126,20 @@ export default function TrafficSection({ settings }) {
               />
             </div>
 
-            <p className="hidden xl:block text-[10px] font-black uppercase tracking-widest text-zinc-600 ml-2">
-              Matches:{" "}
-              <span className="text-zinc-400">{trafficData.length}</span>
-            </p>
+            <div className="hidden xl:flex items-center gap-4 ml-2">
+              <button
+                onClick={fetchLatestData}
+                disabled={syncing}
+                className="flex items-center gap-2.5 text-zinc-600 hover:text-yellow-400 transition-all disabled:opacity-50 group/sync"
+                title="Sync Database"
+              >
+                <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin text-yellow-500" : "group-hover/sync:rotate-180 transition-transform"}`} />
+                <span className="text-[10px] font-black uppercase tracking-widest">Reload</span>
+              </button>
+              <p className="text-[10px] font-black uppercase tracking-widest text-zinc-600 border-l border-white/10 pl-4 py-1">
+                Matches: <span className="text-zinc-400">{trafficData.length}</span>
+              </p>
+            </div>
           </div>
         </div>
 

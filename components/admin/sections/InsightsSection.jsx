@@ -9,7 +9,6 @@ import {
   Globe2,
   Users,
   Download,
-  Percent,
 } from "lucide-react";
 
 export default function InsightsSection({
@@ -45,9 +44,6 @@ export default function InsightsSection({
 
   const totalVisitors = settings.visitorCount || 0;
   const totalDownloads = settings.downloadCount || 0;
-  const conversionRate = totalVisitors > 0 
-    ? ((totalDownloads / totalVisitors) * 100).toFixed(1) 
-    : 0;
 
   const countryCounts = history.reduce((acc, curr) => {
     if (!curr || !curr.country) return acc;
@@ -57,7 +53,7 @@ export default function InsightsSection({
 
   const topLocations = Object.entries(countryCounts)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 10);
+    .slice(0, 15);
 
   const DetailedTrend = ({ data, colorClass, label }) => {
     const days = Array.from({ length: 14 }, (_, i) => {
@@ -136,7 +132,7 @@ export default function InsightsSection({
 
           {/* VISITORS */}
           <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-10 relative overflow-hidden group min-h-[250px] sm:min-h-[300px] flex flex-col justify-between transition-all hover:border-white/10">
-            <Users className="absolute -right-8 -top-8 w-32 sm:w-48 h-32 sm:h-48 text-white/[0.015] pointer-events-none" />
+            <Users className="absolute -right-8 -top-8 w-32 sm:w-48 h-32 sm:h-48 text-white/[0.015] rotate-12 pointer-events-none" />
             <div className="relative z-10">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                 <p className="text-zinc-500 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-black">Unique Visitors</p>
@@ -154,30 +150,19 @@ export default function InsightsSection({
         </div>
 
         <div className="xl:col-span-1 flex flex-col gap-6">
-          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center group min-h-[180px] sm:min-h-[220px]">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              <Percent className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-500" />
-            </div>
-            <p className="text-zinc-500 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-black mb-1">Conversion Rate</p>
-            <div className="text-3xl sm:text-4xl font-black text-white flex items-center gap-1 group-hover:text-yellow-400 transition-colors">
-              {conversionRate}<span className="text-2xl opacity-50">%</span>
-            </div>
-            <p className="text-[10px] text-zinc-600 font-bold mt-1.5 uppercase tracking-widest">Visitors → Players</p>
-          </div>
-
-          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-8 flex flex-col flex-1 overflow-hidden min-h-[300px] sm:min-h-[380px]">
+          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-8 flex flex-col flex-1 overflow-hidden min-h-[500px]">
             <div className="flex items-center gap-2 mb-6 sm:mb-8">
               <Globe2 className="w-4 sm:w-5 h-4 sm:h-5 text-indigo-400 opacity-80" />
               <h4 className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-zinc-400">Top Locations</h4>
             </div>
             <div className="space-y-4 sm:space-y-5">
               {topLocations.length === 0 ? (
-                <div className="py-12 sm:py-20 flex flex-col items-center justify-center text-[10px] font-bold text-zinc-600 uppercase tracking-widest gap-4">
+                <div className="py-20 sm:py-32 flex flex-col items-center justify-center text-[10px] font-bold text-zinc-600 uppercase tracking-widest gap-4">
                    <div className="w-12 h-1 bg-white/5 rounded-full" />
                    No Traffic Data
                 </div>
               ) : (
-                topLocations.slice(0, 10).map(([country, count], idx) => (
+                topLocations.map(([country, count], idx) => (
                   <div key={country} className="flex items-center justify-between group/loc">
                     <div className="flex items-center gap-3 sm:gap-4">
                       <span className="text-[10px] sm:text-[12px] font-black text-white/5 group-hover/loc:text-yellow-500/50 w-3 sm:w-4">{idx + 1}</span>
