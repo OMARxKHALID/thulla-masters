@@ -20,7 +20,22 @@ const SettingsSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    visitorCount: {
+      type: Number,
+      default: 0,
+    },
     downloadHistory: [
+      {
+        timestamp: { type: Date, default: Date.now },
+        ip: String,
+        country: String,
+        city: String,
+        browser: String,
+        os: String,
+        device: String
+      }
+    ],
+    visitorHistory: [
       {
         timestamp: { type: Date, default: Date.now }
       }

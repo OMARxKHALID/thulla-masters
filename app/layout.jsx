@@ -1,5 +1,6 @@
 import { Lilita_One } from "next/font/google";
 import "./globals.css";
+import VisitorTracker from "@/components/shared/VisitorTracker";
 
 
 const lilitaOne = Lilita_One({
@@ -8,6 +9,12 @@ const lilitaOne = Lilita_One({
   display: "swap",
   variable: "--font-lilita",
 });
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  themeColor: '#050512',
+};
 
 export const metadata = {
   metadataBase: new URL("https://thulla-masters.vercel.app/"),
@@ -103,7 +110,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={lilitaOne.variable}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link
           rel="preload"
@@ -116,7 +122,10 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <VisitorTracker />
+        {children}
+      </body>
     </html>
   );
 }

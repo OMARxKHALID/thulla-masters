@@ -1,9 +1,9 @@
 export default function sitemap() {
   return [
     {
-      url: 'https://thullamasters.com',
+      url: 'https://thulla-masters.vercel.app',
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: 'weekly',
       priority: 1,
     },
   ];

@@ -9,6 +9,8 @@ import Header from "@/components/admin/Header";
 import GeneralSection from "@/components/admin/sections/GeneralSection";
 import SocialSection from "@/components/admin/sections/SocialSection";
 import AccountSection from "@/components/admin/sections/AccountSection";
+import InsightsSection from "@/components/admin/sections/InsightsSection";
+import TrafficSection from "@/components/admin/sections/TrafficSection";
 import ResetModal from "@/components/admin/modals/ResetModal";
 import { ToastContainer } from "@/components/shared/Toast";
 
@@ -22,7 +24,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [activeTab, setActiveTab] = useState("content");
+  const [activeTab, setActiveTab] = useState("insights");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [toasts, addToastState] = useState([]);
 
@@ -32,7 +34,9 @@ export default function AdminPage() {
     buySellUrl: "",
     socialLinks: { facebook: "", whatsapp: "", tiktok: "", instagram: "" },
     downloadCount: 0,
+    visitorCount: 0,
     downloadHistory: [],
+    visitorHistory: [],
   });
 
   const [userProfile, setUserProfile] = useState({
@@ -74,7 +78,9 @@ export default function AdminPage() {
             instagram: data.socialLinks?.instagram || "",
           },
           downloadCount: data.downloadCount || 0,
+          visitorCount: data.visitorCount || 0,
           downloadHistory: data.downloadHistory || [],
+          visitorHistory: data.visitorHistory || [],
         });
         addToast("Dashboard data synchronized.");
       }
@@ -156,7 +162,13 @@ export default function AdminPage() {
     setIsResetting(true);
     const result = await resetDownloadsAction(resetPassword);
     if (result.success) {
-      setSettings((prev) => ({ ...prev, downloadCount: 0, downloadHistory: [] }));
+      setSettings((prev) => ({ 
+        ...prev, 
+        downloadCount: 0, 
+        visitorCount: 0, 
+        downloadHistory: [], 
+        visitorHistory: [] 
+      }));
       addToast("Counter reset successfully.");
       setShowResetModal(false);
       setResetPassword("");
@@ -191,7 +203,9 @@ export default function AdminPage() {
               instagram: settingsData.socialLinks?.instagram || "",
             },
             downloadCount: settingsData.downloadCount || 0,
+            visitorCount: settingsData.visitorCount || 0,
             downloadHistory: settingsData.downloadHistory || [],
+            visitorHistory: settingsData.visitorHistory || [],
           });
         }
         if (user) {
@@ -252,6 +266,19 @@ export default function AdminPage() {
 
             {activeTab === "social" && (
               <SocialSection settings={settings} setSettings={setSettings} />
+            )}
+
+            {activeTab === "insights" && (
+              <InsightsSection 
+                settings={settings} 
+                syncing={syncing} 
+                fetchLatestData={fetchLatestData} 
+                setShowResetModal={setShowResetModal} 
+              />
+            )}
+
+            {activeTab === "traffic" && (
+              <TrafficSection settings={settings} />
             )}
 
             {activeTab === "account" && (

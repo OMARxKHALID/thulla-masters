@@ -3,8 +3,8 @@ export default function robots() {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/private/',
+      disallow: ['/admin', '/login', '/api/'],
     },
-    sitemap: 'https://thullamasters.com/sitemap.xml',
+    sitemap: 'https://thulla-masters.vercel.app/sitemap.xml',
   }
 }

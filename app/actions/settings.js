@@ -71,7 +71,12 @@ export async function resetDownloadsAction(password) {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return { error: "Incorrect password" };
 
-    await updateSettings({ downloadCount: 0, downloadHistory: [] });
+    await updateSettings({ 
+      downloadCount: 0, 
+      downloadHistory: [],
+      visitorCount: 0,
+      visitorHistory: [] 
+    });
 
     revalidateTag("settings");
     revalidatePath("/");

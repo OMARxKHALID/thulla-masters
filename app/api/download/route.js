@@ -1,13 +1,29 @@
-import { NextResponse } from "next/server";
+import { NextResponse, userAgent, connection } from "next/server";
 
 import dbConnect from "@/lib/mongodb";
 import Settings from "@/models/Settings";
 import { revalidateTag } from "next/cache";
 
 export async function GET(request) {
+  await connection();
+
   try {
     await dbConnect();
-
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "Unknown";
+    const country = request.headers.get("x-vercel-ip-country") || "Local";
+    const city = request.headers.get("x-vercel-ip-city") || "Local";
+    
+    const { browser, os, device } = userAgent(request);
+    
+    const trackingData = {
+      timestamp: new Date(),
+      ip: ip.split(',')[0].trim(),
+      country,
+      city: decodeURIComponent(city),
+      browser: browser.name || "Unknown",
+      os: os.name || "Unknown",
+      device: device.type || "Desktop"
+    };
 
     const settings = await Settings.findOneAndUpdate(
       {},
@@ -15,8 +31,8 @@ export async function GET(request) {
         $inc: { downloadCount: 1 },
         $push: {
           downloadHistory: {
-            $each: [{ timestamp: new Date() }],
-            $slice: -500,
+            $each: [trackingData],
+            $slice: -2000,
           },
         },
         $setOnInsert: { apkDownloadUrl: "/thulla-masters.apk" },
