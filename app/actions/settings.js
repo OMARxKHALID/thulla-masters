@@ -47,7 +47,7 @@ export async function saveSettingsAction(formData) {
 
     await updateSettings(data);
 
-    // Bust the 'use cache' cache for settings
+
     revalidateTag("settings");
     revalidatePath("/");
 

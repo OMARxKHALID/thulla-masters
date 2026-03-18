@@ -38,7 +38,7 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
         className="relative w-full mx-auto px-5 pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20"
         style={{ maxWidth: "min(96%, 700px)", minHeight: 460 }}
       >
-        {/* Floating cards — use Next/Image for WebP auto-conversion, proper sizing */}
+
         <motion.div
           className="absolute z-0 -left-[4%] sm:-left-[8%] lg:-left-[18%] xl:-left-[24%]"
           style={{ top: 20 }}
@@ -103,7 +103,7 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
           />
         </motion.div>
 
-        {/* Main content */}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -18,7 +18,7 @@ import { resetDownloadsAction, saveSettingsAction } from "@/app/actions/settings
 export default function AdminPage() {
   const router = useRouter();
 
-  // UI State
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -26,7 +26,7 @@ export default function AdminPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [toasts, addToastState] = useState([]);
 
-  // Data State
+
   const [settings, setSettings] = useState({
     apkDownloadUrl: "",
     buySellUrl: "",
@@ -43,12 +43,12 @@ export default function AdminPage() {
     confirmPassword: "",
   });
 
-  // Reset Modal State
+
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetPassword, setResetPassword] = useState("");
   const [isResetting, setIsResetting] = useState(false);
 
-  // Toast helpers
+
   const addToast = (message, type = "success") => {
     addToastState((prev) => [...prev, { id: Date.now(), message, type }]);
   };

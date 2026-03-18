@@ -48,7 +48,7 @@ export default function GeneralSection({
           </div>
         </div>
 
-        {/* Downloads bar chart */}
+
         <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-10 sm:p-12 relative overflow-hidden group min-h-[300px] flex flex-col justify-between">
           <div className="absolute top-0 right-0 p-10 opacity-[0.05]">
             <BarChart3 className="w-56 h-56 text-white" />
@@ -123,7 +123,7 @@ export default function GeneralSection({
           Management
         </h3>
         <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-7 sm:p-9 space-y-7">
-          {/* APK Download URL */}
+
           <div className="space-y-4">
             <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2.5 px-1">
               <Package className="w-4 h-4 text-yellow-400/80" /> APK
@@ -145,7 +145,7 @@ export default function GeneralSection({
 
           <div className="h-px bg-white/5" />
 
-          {/* Buy & Sell URL */}
+
           <div className="space-y-3">
             <label className="text-[9px] font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2 px-1">
               <SquarePlay className="w-3.5 h-3.5 text-red-500/70" /> Help

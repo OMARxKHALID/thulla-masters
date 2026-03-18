@@ -10,9 +10,11 @@ const ArrowBtn = ({ direction, onClick }) => (
     className="hover:scale-110 active:scale-90 transition-transform drop-shadow-lg cursor-pointer flex-shrink-0"
     aria-label={direction === "left" ? "Previous rule" : "Next rule"}
   >
-    <img
+    <Image
       src={direction === "left" ? "/ui/arrow%20l.png" : "/ui/arrow%20r.png"}
       alt={direction === "left" ? "Previous" : "Next"}
+      width={56}
+      height={56}
       className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 object-contain"
     />
   </button>
@@ -44,7 +46,7 @@ const GameRules = ({ buySellUrl = "https://www.youtube.com/" }) => {
           <ArrowBtn direction="left" onClick={prev} />
         </div>
 
-        {/* Carousel Content */}
+
         <div className="overflow-hidden w-full">
           <motion.div
             className="flex"
@@ -75,7 +77,7 @@ const GameRules = ({ buySellUrl = "https://www.youtube.com/" }) => {
         </div>
       </div>
 
-      {/* Dots */}
+
       <div className="flex gap-2 mt-6">
         {Rules.map((_, i) => (
           <button
@@ -91,7 +93,7 @@ const GameRules = ({ buySellUrl = "https://www.youtube.com/" }) => {
         ))}
       </div>
 
-      {/* Rule text is intentionally omitted here because it is baked into the tutorial X.png images */}
+
 
       <div className="mt-8 w-[95%] max-w-lg">
         <a
@@ -100,10 +102,12 @@ const GameRules = ({ buySellUrl = "https://www.youtube.com/" }) => {
           rel="noopener noreferrer"
           className="btn-secondary-blue inline-block cursor-pointer"
         >
-          <img
+          <Image
             src="/ui/HOW%20TO%20BUY%20&%20SELL_.png"
             alt="HOW TO BUY & SELL?"
-            className="h-[12px] sm:h-[16px] lg:h-[20px] object-contain drop-shadow-sm inline"
+            width={160}
+            height={20}
+            className="h-[12px] sm:h-[16px] lg:h-[20px] w-auto object-contain drop-shadow-sm inline"
           />
         </a>
       </div>

@@ -96,7 +96,7 @@ const Footer = ({ className, socials = {} }) => {
       </div>
 
       <div className="relative z-30 flex flex-col items-center gap-3 sm:gap-4 lg:gap-5 pt-3 sm:pt-5 lg:pt-6 pb-4 sm:pb-6 lg:pb-8">
-        {/* Social links */}
+
         <div className="flex items-center justify-center gap-3.5 sm:gap-5 lg:gap-7">
           {dynamicSocials.map((s) => (
             <SocialIcon

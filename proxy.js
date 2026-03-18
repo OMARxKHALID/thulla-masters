@@ -7,7 +7,7 @@ const secret = new TextEncoder().encode(JWT_SECRET);
 export async function proxy(request) {
   const token = request.cookies.get("token")?.value;
 
-  // Protect /admin routes
+
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!token) {
       if (request.nextUrl.pathname.startsWith('/api/')) {

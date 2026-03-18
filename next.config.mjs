@@ -3,16 +3,16 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // Serve modern image formats via next/image
+
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 86400, // 1 day
+    minimumCacheTTL: 86400,
   },
 
-  // Enable "use cache" directive (Next.js 15+ experimental/stable)
+
   cacheComponents: true,
 
-  // Long-lived cache headers for static UI assets
+
   async headers() {
     return [
       {

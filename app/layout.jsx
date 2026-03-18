@@ -1,7 +1,7 @@
 import { Lilita_One } from "next/font/google";
 import "./globals.css";
 
-// Self-hosted via Next.js — no Google CDN round-trip, auto preload
+
 const lilitaOne = Lilita_One({
   weight: "400",
   subsets: ["latin"],
@@ -104,7 +104,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={lilitaOne.variable}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* Preload the hero background early — prevents blank flash */}
+
         <link
           rel="preload"
           as="image"

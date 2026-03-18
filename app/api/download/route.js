@@ -8,7 +8,7 @@ export async function GET(request) {
   try {
     await dbConnect();
 
-    // Single atomic upsert — no double round-trip
+
     const settings = await Settings.findOneAndUpdate(
       {},
       {
@@ -16,7 +16,7 @@ export async function GET(request) {
         $push: {
           downloadHistory: {
             $each: [{ timestamp: new Date() }],
-            $slice: -500, // cap array at last 500 entries
+            $slice: -500,
           },
         },
         $setOnInsert: { apkDownloadUrl: "/thulla-masters.apk" },
@@ -24,7 +24,7 @@ export async function GET(request) {
       { upsert: true, returnDocument: "after" }
     ).lean();
 
-    // Bust settings cache so admin dashboard shows fresh count
+
     revalidateTag("settings");
 
     const fileUrl = settings.apkDownloadUrl || "/thulla-masters.apk";

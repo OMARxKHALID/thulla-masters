@@ -39,7 +39,7 @@ body {
   background-image: url("/ui/Background.png");
   background-size: cover;
   background-position: center;
-  /* scroll on mobile — fixed triggers CPU repaints every frame on Android */
+
   background-attachment: scroll;
   color: var(--foreground);
   min-height: 100vh;
@@ -50,7 +50,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Only fixed on desktop where GPU compositing handles it fine */
+
 @media (min-width: 1024px) {
   body {
     background-attachment: fixed;
