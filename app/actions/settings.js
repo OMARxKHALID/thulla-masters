@@ -30,6 +30,10 @@ export async function saveSettingsAction(formData) {
     const buySellUrl = formData.get("buySellUrl")?.toString().trim();
     const redirectUrl = formData.get("redirectUrl")?.toString().trim() || "";
     
+    if (redirectUrl && !redirectUrl.startsWith('http') && !redirectUrl.startsWith('/')) {
+      return { error: "Invalid redirect URL format." };
+    }
+
     if (!apkDownloadUrl || !apkDownloadUrl.startsWith('http') && !apkDownloadUrl.startsWith('/')) {
       return { error: "Invalid APK URL format." };
     }
@@ -53,7 +57,7 @@ export async function saveSettingsAction(formData) {
     };
 
     await updateSettings(data);
-    revalidateTag("settings");
+    revalidateTag("settings", "max");
     revalidatePath("/");
     revalidatePath("/admin");
 
@@ -84,7 +88,7 @@ export async function resetDownloadsAction(password) {
       visitorHistory: [] 
     });
 
-    revalidateTag("settings");
+    revalidateTag("settings", "max");
     revalidatePath("/");
     revalidatePath("/admin");
 

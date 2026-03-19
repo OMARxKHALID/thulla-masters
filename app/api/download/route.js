@@ -40,7 +40,7 @@ export async function GET(request) {
       { upsert: true, returnDocument: "after" }
     ).lean();
 
-    revalidateTag("settings");
+    revalidateTag("settings", "max");
     const fileUrl = settings.apkDownloadUrl || "/thulla-masters.apk";
     const redirectUrl = new URL(fileUrl, request.url);
 

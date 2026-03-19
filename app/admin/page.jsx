@@ -2,8 +2,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/actions/auth";
 import { getSettings } from "@/lib/services/settings";
 import AdminClient from "@/components/admin/AdminClient";
+import { Suspense } from "react";
 
-export default async function AdminPage() {
+async function AdminContent() {
   const user = await getCurrentUser();
 
   if (!user || user.role !== "admin") {
@@ -29,4 +30,12 @@ export default async function AdminPage() {
   };
 
   return <AdminClient initialSettings={initialSettings} user={user} />;
+}
+
+export default function AdminPage() {
+  return (
+    <Suspense fallback={null}>
+      <AdminContent />
+    </Suspense>
+  );
 }

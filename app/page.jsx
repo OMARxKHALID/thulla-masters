@@ -4,8 +4,9 @@ import Hero from "@/components/marketing/Hero";
 import GameRules from "@/components/marketing/GameRules";
 import Footer from "@/components/shared/Footer";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-export default async function Home() {
+async function HomeContent() {
   const data = await getSettings();
 
   if (data.redirectUrl) {
@@ -13,13 +14,21 @@ export default async function Home() {
   }
 
   return (
+    <div className="flex-1 flex flex-col h-full">
+      <Navbar />
+      <Hero apkUrl={data.apkDownloadUrl} />
+      <GameRules buySellUrl={data.buySellUrl} />
+      <Footer socials={data.socialLinks} className="mt-auto" />
+    </div>
+  );
+}
+
+export default function Home() {
+  return (
     <main className="min-h-screen relative overflow-x-hidden flex flex-col pt-2">
-      <div className="flex-1 flex flex-col h-full">
-        <Navbar />
-        <Hero apkUrl={data.apkDownloadUrl} />
-        <GameRules buySellUrl={data.buySellUrl} />
-        <Footer socials={data.socialLinks} className="mt-auto" />
-      </div>
+      <Suspense fallback={null}>
+        <HomeContent />
+      </Suspense>
     </main>
   );
 }

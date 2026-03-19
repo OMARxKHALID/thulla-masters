@@ -2,7 +2,6 @@ import { Lilita_One } from "next/font/google";
 import "./globals.css";
 import VisitorTracker from "@/components/shared/VisitorTracker";
 
-
 const lilitaOne = Lilita_One({
   weight: "400",
   subsets: ["latin"],
@@ -11,9 +10,9 @@ const lilitaOne = Lilita_One({
 });
 
 export const viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1.0,
-  themeColor: '#050512',
+  themeColor: "#050512",
 };
 
 export const metadata = {
@@ -110,7 +109,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={lilitaOne.variable}>
       <head>
-
         <link
           rel="preload"
           as="image"
