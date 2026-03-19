@@ -1,3 +1,5 @@
+// middleware.js is deprecated, use proxy.js instead
+
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
@@ -7,31 +9,33 @@ const secret = new TextEncoder().encode(JWT_SECRET);
 export async function proxy(request) {
   const token = request.cookies.get("token")?.value;
 
-
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  if (request.nextUrl.pathname.startsWith("/admin")) {
     if (!token) {
-      if (request.nextUrl.pathname.startsWith('/api/')) {
-        return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+      if (request.nextUrl.pathname.startsWith("/api/")) {
+        return NextResponse.json(
+          { error: "Not authenticated" },
+          { status: 401 },
+        );
       }
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
 
     try {
       const { payload } = await jwtVerify(token, secret);
-      
-      if (payload.role !== 'admin') {
-        if (request.nextUrl.pathname.startsWith('/api/')) {
-          return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+
+      if (payload.role !== "admin") {
+        if (request.nextUrl.pathname.startsWith("/api/")) {
+          return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
         }
-        return NextResponse.redirect(new URL('/login', request.url));
+        return NextResponse.redirect(new URL("/login", request.url));
       }
-      
+
       return NextResponse.next();
     } catch (error) {
-      if (request.nextUrl.pathname.startsWith('/api/')) {
-        return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+      if (request.nextUrl.pathname.startsWith("/api/")) {
+        return NextResponse.json({ error: "Invalid session" }, { status: 401 });
       }
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
@@ -39,5 +43,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ["/admin/:path*"],
 };

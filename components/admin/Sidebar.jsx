@@ -39,35 +39,35 @@ export default function Sidebar({ activeTab, setActiveTab, isSidebarOpen, setIsS
         transition-transform duration-300 transform lg:static lg:translate-x-0
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
-        <div className="flex items-center justify-between mb-8 px-1">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-yellow-400 rounded-lg flex items-center justify-center border border-yellow-500/50 shadow-lg shadow-yellow-400/20">
-              <ShieldCheck className="text-zinc-900 w-5 h-5" />
+        <div className="flex items-center justify-between mb-10 px-1 gap-4">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center border border-yellow-500/50 shadow-lg shadow-yellow-400/20 shrink-0">
+              <ShieldCheck className="text-zinc-900 w-5.5 h-5.5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h1 className="text-white font-black tracking-tight leading-none text-base">THULLA</h1>
-              <p className="text-[9px] uppercase tracking-widest text-zinc-600 font-bold mt-1 whitespace-nowrap">Control Center</p>
+              <p className="text-[8px] uppercase tracking-widest text-zinc-600 font-bold mt-1 truncate">Control Center</p>
             </div>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5 shrink-0">
             <button 
               onClick={() => router.push("/")}
-              className="p-2.5 rounded-lg bg-white/5 border border-white/5 text-zinc-500 hover:text-yellow-400 hover:bg-white/10 transition-all group"
+              className="p-2 rounded-xl bg-white/5 border border-white/5 text-zinc-500 hover:text-yellow-400 hover:bg-white/10 transition-all group"
               title="Return to Website"
             >
               <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
             </button>
             <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-1.5 text-zinc-500 hover:text-white">
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
         <div className="flex-1 space-y-2">
           <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 font-black mb-4 px-2">Management</p>
-          <NavItem id="insights" icon={BarChart3} label="Platform Insights" />
-          <NavItem id="traffic" icon={Activity} label="Traffic Analytics" />
-          <NavItem id="content" icon={AppWindow} label="General Settings" />
+          <NavItem id="insights" icon={BarChart3} label="Analytics Overview" />
+          <NavItem id="traffic" icon={Activity} label="Activity Feed" />
+          <NavItem id="content" icon={AppWindow} label="Site Settings" />
           <NavItem id="social" icon={Globe2} label="Social Links" />
 
           <NavItem id="account" icon={UserIcon} label="Account Settings" />

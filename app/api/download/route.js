@@ -1,14 +1,13 @@
 import { NextResponse, userAgent, connection } from "next/server";
-
 import dbConnect from "@/lib/mongodb";
 import Settings from "@/models/Settings";
 import { revalidateTag } from "next/cache";
 
 export async function GET(request) {
   await connection();
-
   try {
     await dbConnect();
+    const referer = request.headers.get("referer") || "Direct";
     const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "Unknown";
     const country = request.headers.get("x-vercel-ip-country") || "Local";
     const city = request.headers.get("x-vercel-ip-city") || "Local";
@@ -22,7 +21,8 @@ export async function GET(request) {
       city: decodeURIComponent(city),
       browser: browser.name || "Unknown",
       os: os.name || "Unknown",
-      device: device.type || "Desktop"
+      device: device.type || "Desktop",
+      referer: referer
     };
 
     const settings = await Settings.findOneAndUpdate(
@@ -40,9 +40,7 @@ export async function GET(request) {
       { upsert: true, returnDocument: "after" }
     ).lean();
 
-
     revalidateTag("settings");
-
     const fileUrl = settings.apkDownloadUrl || "/thulla-masters.apk";
     const redirectUrl = new URL(fileUrl, request.url);
 
@@ -52,7 +50,6 @@ export async function GET(request) {
       },
     });
   } catch (error) {
-    console.error("Download Error:", error);
     return NextResponse.redirect(new URL("/thulla-masters.apk", request.url));
   }
 }

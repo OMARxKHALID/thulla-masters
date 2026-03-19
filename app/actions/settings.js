@@ -26,34 +26,40 @@ export async function saveSettingsAction(formData) {
     const payload = await verifyAdmin();
     await dbConnect();
 
-    const userId = payload.userId?.toString();
-    if (!userId) return { error: "Invalid session" };
-
-    const user = await User.findById(userId);
-    if (!user) return { error: "User not found" };
+    const apkDownloadUrl = formData.get("apkDownloadUrl")?.toString().trim();
+    const buySellUrl = formData.get("buySellUrl")?.toString().trim();
+    const redirectUrl = formData.get("redirectUrl")?.toString().trim() || "";
+    
+    if (!apkDownloadUrl || !apkDownloadUrl.startsWith('http') && !apkDownloadUrl.startsWith('/')) {
+      return { error: "Invalid APK URL format." };
+    }
 
     const socialLinks = {
-      facebook: formData.get("facebook"),
-      whatsapp: formData.get("whatsapp"),
-      tiktok: formData.get("tiktok"),
-      instagram: formData.get("instagram"),
+      facebook: formData.get("facebook")?.toString().trim() || "",
+      whatsapp: formData.get("whatsapp")?.toString().trim() || "",
+      tiktok: formData.get("tiktok")?.toString().trim() || "",
+      instagram: formData.get("instagram")?.toString().trim() || "",
     };
 
+    const userId = payload.userId?.toString();
+    const user = await User.findById(userId);
+    if (!user) return { error: "User session expired." };
+
     const data = {
-      apkDownloadUrl: formData.get("apkDownloadUrl"),
-      buySellUrl: formData.get("buySellUrl"),
+      apkDownloadUrl,
+      buySellUrl,
+      redirectUrl,
       socialLinks,
     };
 
     await updateSettings(data);
-
-
     revalidateTag("settings");
     revalidatePath("/");
+    revalidatePath("/admin");
 
     return { success: true };
   } catch (error) {
-    return { error: error.message };
+    return { error: "Failed to sync settings. Please check your inputs." };
   }
 }
 
@@ -80,6 +86,7 @@ export async function resetDownloadsAction(password) {
 
     revalidateTag("settings");
     revalidatePath("/");
+    revalidatePath("/admin");
 
     return { success: true };
   } catch (error) {

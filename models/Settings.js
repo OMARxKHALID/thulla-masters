@@ -10,6 +10,10 @@ const SettingsSchema = new mongoose.Schema(
       type: String,
       default: "https://www.youtube.com/",
     },
+    redirectUrl: {
+      type: String,
+      default: "",
+    },
     socialLinks: {
       facebook: { type: String, default: "https://www.facebook.com/" },
       whatsapp: { type: String, default: "https://www.whatsapp.com/" },
@@ -26,18 +30,26 @@ const SettingsSchema = new mongoose.Schema(
     },
     downloadHistory: [
       {
-        timestamp: { type: Date, default: Date.now },
+        timestamp: { type: Date },
         ip: String,
         country: String,
         city: String,
         browser: String,
         os: String,
-        device: String
+        device: String,
+        referer: String
       }
     ],
     visitorHistory: [
       {
-        timestamp: { type: Date, default: Date.now }
+        timestamp: { type: Date },
+        ip: String,
+        country: String,
+        city: String,
+        browser: String,
+        os: String,
+        device: String,
+        referer: String
       }
     ],
   },

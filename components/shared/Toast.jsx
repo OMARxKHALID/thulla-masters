@@ -22,7 +22,7 @@ const iconStyles = {
   info: "bg-yellow-500 shadow-yellow-400/20",
 };
 
-export default function Toast({ message, type = "success", onClose, duration = 4000 }) {
+export default function Toast({ message, type = "success", onClose, duration = 3000 }) {
   const Icon = icons[type] || Info;
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Toast({ message, type = "success", onClose, duration = 4
       const timer = setTimeout(onClose, duration);
       return () => clearTimeout(timer);
     }
-  }, [duration, onClose]);
+  }, []);
 
   return (
     <motion.div

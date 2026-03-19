@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import RollingNumber from "@/components/shared/RollingNumber";
 
 const HeroLogo = () => (
   <div className="flex flex-col items-center select-none w-[220px] sm:w-[320px] md:w-[420px] lg:w-[560px] xl:w-[680px] mb-4 lg:mb-8">
@@ -19,13 +20,28 @@ const HeroLogo = () => (
 
 const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
   const [downloading, setDownloading] = useState(false);
+  const [counts, setCounts] = useState({ downloads: 0 });
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data && typeof data.downloadCount === 'number') {
+          setCounts({ downloads: data.downloadCount });
+        }
+      } catch (err) {}
+    };
+
+    fetchCounts();
+    const interval = setInterval(fetchCounts, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDownload = async () => {
     if (downloading) return;
     setDownloading(true);
-
     window.location.href = "/api/download";
-
     setTimeout(() => {
       setDownloading(false);
       window.location.href = "/#home";
@@ -38,7 +54,6 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
         className="relative w-full mx-auto px-5 pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20"
         style={{ maxWidth: "min(96%, 700px)", minHeight: 460 }}
       >
-
         <motion.div
           className="absolute z-0 -left-[4%] sm:-left-[8%] lg:-left-[18%] xl:-left-[24%]"
           style={{ top: 20 }}
@@ -103,78 +118,65 @@ const Hero = ({ apkUrl = "/thulla-masters.apk" }) => {
           />
         </motion.div>
 
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           className="relative z-10 flex flex-col items-center text-center w-full"
         >
-          <h1 className="sr-only">
-            Thulla Masters - The Ultimate Card Battle Game
-          </h1>
+          <h1 className="sr-only">Thulla Masters</h1>
           <HeroLogo />
 
           <div className="mt-4 mb-6 sm:mb-8 flex justify-center w-[250px] sm:w-[350px] lg:w-[480px]">
             <Image
               src="/ui/Think you can hold the ace and still get away_ Can you avoid be.png"
-              alt="Think you can hold the ace and still get away? Can you avoid being the Bhabhi? Thulla Expert? Let's challenge your skills!"
+              alt="Challenge your skills"
               width={480}
               height={120}
               className="w-full h-auto object-contain drop-shadow-xl"
             />
           </div>
 
-          <button
-            onClick={handleDownload}
-            disabled={downloading}
-            className="btn-primary-purple w-[220px] sm:w-[260px] lg:w-[310px] drop-shadow-lg"
-            style={{
-              opacity: downloading ? 0.75 : 1,
-              transition: "transform 0.1s, opacity 0.2s",
-            }}
-            onMouseDown={(e) =>
-              (e.currentTarget.style.transform = "scale(0.96)")
-            }
-            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            {downloading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg
-                  className="animate-spin w-5 h-5 lg:w-[22px] lg:h-[22px]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeOpacity="0.3"
-                  />
-                  <path
-                    d="M12 2a10 10 0 0 1 10 10"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                DOWNLOADING…
-              </span>
-            ) : (
-              <span className="flex items-center justify-center gap-2 lg:gap-3">
-                <Image
-                  src="/ui/DOWNLOAD.png"
-                  alt="DOWNLOAD"
-                  width={88}
-                  height={22}
-                  className="h-[14px] sm:h-[18px] lg:h-[22px] w-auto object-contain drop-shadow-sm"
-                />
-              </span>
+          <div className="flex flex-col items-center gap-6">
+            <button
+              onClick={handleDownload}
+              disabled={downloading}
+              className="btn-primary-purple w-[220px] sm:w-[260px] lg:w-[310px] drop-shadow-lg"
+              onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.96)")}
+              onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            >
+              {downloading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin w-5 h-5 text-white/50" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                  </svg>
+                  ...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-3 italic font-black">
+                   DOWNLOAD
+                </span>
+              )}
+            </button>
+
+            {counts.downloads > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/40">
+                    Live Players
+                  </span>
+                </div>
+                <div className="text-2xl font-black text-white tracking-tighter tabular-nums">
+                   <RollingNumber value={counts.downloads} />
+                </div>
+              </motion.div>
             )}
-          </button>
+          </div>
         </motion.div>
       </div>
     </section>

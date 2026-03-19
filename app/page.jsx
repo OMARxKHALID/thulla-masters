@@ -3,17 +3,23 @@ import Navbar from "@/components/shared/Navbar";
 import Hero from "@/components/marketing/Hero";
 import GameRules from "@/components/marketing/GameRules";
 import Footer from "@/components/shared/Footer";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const data = await getSettings();
 
+  if (data.redirectUrl) {
+    redirect(data.redirectUrl);
+  }
+
   return (
-    <main className="min-h-screen relative overflow-x-hidden flex flex-col">
-      <Navbar />
-      <Hero apkUrl={data.apkDownloadUrl} />
-      <GameRules buySellUrl={data.buySellUrl} />
-      <Footer socials={data.socialLinks} className="mt-auto" />
+    <main className="min-h-screen relative overflow-x-hidden flex flex-col pt-2">
+      <div className="flex-1 flex flex-col h-full">
+        <Navbar />
+        <Hero apkUrl={data.apkDownloadUrl} />
+        <GameRules buySellUrl={data.buySellUrl} />
+        <Footer socials={data.socialLinks} className="mt-auto" />
+      </div>
     </main>
   );
 }
-
